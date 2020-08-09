@@ -1,0 +1,44 @@
+var getImg=function(state,ins){
+  if(!state.imgEl){
+    state.imgEl=ins.selectComponent("#realImg");
+    state.imgScale=1;
+    state.imgLeft=0;
+    state.imgTop=0;
+    state.imgScaleLeftAdd=0;
+    state.imgScaleTopAdd=0;
+    state.imgLeft0=0;
+    state.imgTop0=0;
+  }
+}
+var setPosition=function(state,ins,scale){
+  var x=state.imgLeft;
+  var y=state.imgTop;
+  var scale=state.imgScale;
+  ins.callMethod("recordState",[x,y,scale]);
+  state.imgEl.setStyle({
+    transform:"translate3d("+x+"px,"+y+"px,0) scale("+scale+")"
+  })
+};
+
+var moveChange=function(e,ins){
+  var state=ins.getState();
+  getImg(state,ins);
+  state.imgLeft=e.detail.x;
+  state.imgTop=e.detail.y;
+  setPosition(state,ins);
+}
+
+var scaleChange=function(e,ins){
+  var state=ins.getState();
+  getImg(state,ins);
+  state.imgScale=e.detail.scale;
+  state.imgTop=e.detail.y;
+  state.imgLeft=e.detail.x;
+  setPosition(state,ins,'scale');
+}
+
+
+module.exports={
+  moveChange:moveChange,
+  scaleChange:scaleChange
+}

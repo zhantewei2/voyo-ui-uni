@@ -1,0 +1,220 @@
+@import "~@voyo/core-style/lib/components-dep.scss";
+
+.voyo-input-wrapper{
+  margin:$--voyo-input-wrapper-margin;
+  ._prefix,._suffix,._clear{
+    z-index:1;
+    position:relative;
+    height:100%;
+    min-width:1px;
+    @include ICenter();
+    box-sizing: border-box;
+
+  }
+  ._container{
+    position:relative;
+    display:flex;
+    align-items: center;
+    padding:$--voyo-input-wrapper-padding;
+  }
+  ._input-container{
+    position:relative;
+    z-index:1;
+    height:100%;
+  }
+  ._container-line{
+    opacity:0;
+    height:2px;
+    width:100%;
+    position:absolute;
+    left:50%;
+    bottom:0;
+    background:$--voyo-input-line-color;
+    transform: translate(-50%,0) scaleX(.1);
+    @include Transition($type:fast)
+  }
+  ._placeholder{
+    position:absolute;
+    top:0;
+    left:0;
+    padding-top:$--voyo-input-padding-y;
+    padding-left:$--voyo-input-padding-x;
+    z-index:-1;
+    line-height: 1;
+    @include Transition();
+    white-space:nowrap;
+    width:100%;
+    box-sizing: border-box;
+    font-size:inherit;
+    color:$--voyo-input-placeholder-color;
+  }
+  ._input-container{
+    @include Flex-1();
+  }
+  ._input{
+    @extend %base-input;
+    height:100%;
+    width:100%;
+    font-size:inherit;
+    padding:$--voyo-input-padding-y $--voyo-input-padding-x;
+    &.__visual-input{
+      display:flex;
+      align-items: center;
+    }
+  }
+
+
+
+  ._clear{
+    display:none;
+    padding:$--voyo-input-clear-padding;
+  }
+  &.__clearable{
+    ._clear{
+      display:inline-flex;
+    }
+  }
+  &.__prefix{
+    ._prefix{
+      min-width:$--voyo-input-adapt-prefix-mini-w;
+      padding:$--voyo-input-adapt-padding;
+    }
+  }
+  &.__suffix{
+    ._suffix{
+      padding:$--voyo-input-adapt-padding;
+    }
+  }
+  &.__footer{
+    ._footer{
+      min-height:$--voyo-input-footer-height;
+      line-height:1;
+      padding:$--voyo-input-footer-padding;
+    }
+  }
+  ._close{
+    width:1em;
+  }
+}
+
+
+
+.voyo-input-wrapper{
+  &.__type-flat{
+    ._container{
+      @include AfterBorder();
+    }
+    ._placeholder{
+      opacity:0;
+      transform: translate3d(100%,#{$--voyo-input-height-flat*1em/2 - 1em},0);
+    }
+    &.__show-placeholder{
+      ._placeholder{
+        opacity:1;
+      }
+    }
+  }
+  &.__type-candy{
+    ._placeholder{
+      opacity: 0;
+      transform: translate3d(100%, #{$--voyo-input-height-candy*1em/2 - 1em},0);
+    }
+    &.__show-placeholder{
+      ._placeholder{
+        opacity:1;
+      }
+    }
+  }
+  &.__type-md{
+    ._container{
+      @include AfterBorder();
+    }
+    ._input{
+      color: $--voyo-input-color-md;
+    }
+    &.__focus{
+      ._container-line{
+        opacity:1;
+        transform: translate(-50%,0) scaleX(1);
+      }
+    }
+    ._placeholder{
+      transform: translate3d(100%,0%,0);
+      opacity:0;
+      //color:$--voyo-input-placeholder-color2;
+    }
+    &.__show-placeholder{
+      ._placeholder{
+        opacity:1;
+        color:$--voyo-input-placeholder-color;
+        transform: translate3d(100%,#{$--voyo-input-height-md*1em/2 - 1em} ,0);
+      }
+    }
+    @each $k,$v in $--voyo-input-colors{
+      &.__color-#{$k}{
+        ._container{
+          @include AfterBorder($borderColor:$v);
+        }
+        ._container-line{
+          background:$v;
+        }
+      }
+    }
+  }
+  &.__type-candy{
+    ._container{
+      @include Radius($--voyo-input-candy-radius);
+      background:$--voyo-input-candy-bg;
+    }
+  }
+}
+
+@each $k,$v in $--voyo-input-size{
+  .voyo-input-wrapper{
+    &.__size-#{$k}{
+      font-size:$v;
+      &.__type-md {
+        ._header{
+          height:calc(#{$v} * 0.2);
+        }
+        ._container {
+          height: calc(#{$v} * #{$--voyo-input-height-md});
+        }
+      }
+      &.__type-flat{
+        ._container {
+          height: calc(#{$v} * #{$--voyo-input-height-flat});
+        }
+      }
+      &.__type-candy{
+        ._container{
+          height: calc(#{$v} * #{$--voyo-input-height-candy});
+        }
+      }
+    }
+  }
+}
+
+._visual-input-text{
+
+}
+@keyframes Ficker{
+  from {opacity:0}
+  to {opacity:1}
+}
+
+._visual-input-cursor{
+  &._show{
+    display:block;
+    height:$--voyo-input-cursor-height;
+    width:$--voyo-input-cursor-width;
+    background:$--voyo-input-cursor-color;
+    animation:Ficker .5s ease infinite;
+    animation-direction: alternate;
+    margin-left:.2em;
+  }
+}
+._adapter-container{
+  height:100%;
+  @include Center();
+}

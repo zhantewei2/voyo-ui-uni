@@ -1,0 +1,79 @@
+var touchStart=function(e,ins){
+  var state=ins.getState();
+  var touchOpts=e.touches[0];
+  if(!state.initEnd)return;
+  state.startTrigger=true;
+  state.startX=touchOpts.pageX;
+}
+
+var touchMove=function(e,ins){
+  var touchOpts=e.touches[0];
+  var state=ins.getState();
+  if(!state.initEnd||!state.startTrigger)return;
+  var min=0;
+  var max=state.maxWidth;
+
+  var distanceX=touchOpts.pageX-state.startX+(state.originLeft||0);
+  if(distanceX<min){
+    distanceX=0;
+  }else if(distanceX>max){
+    distanceX=max;
+  }
+
+  if(distanceX===state.currentX)return;
+  state.percent=distanceX/max;
+  state.currentX=distanceX;
+  state.barEl.setStyle({
+    transform:"translate3d("+distanceX+"px,0,0)"
+  });
+  state.targetRotate=state.percent*360 + state.rotateStart;
+  state.imgEl.setStyle({
+    transform:"rotate("+state.targetRotate+"deg)"
+  })
+}
+
+var touchEnd=function(v0,ins){
+  var state=ins.getState();
+  state.originLeft=state.currentX;
+  ins.callMethod("touchEnd",state.targetRotate)
+}
+var valueChange=function(newV,oldV,ins){
+  if(!newV)return;
+  var arr=newV.split("-");
+  var state=ins.getState();
+  state.thumbWidth=Number(arr[0]);
+  state.barWidth=Number(arr[1]);
+  state.rotateStart=Number(arr[2]);
+  state.maxWidth=state.thumbWidth-state.barWidth;
+  state.currentX=undefined;
+  state.originLeft=0;
+  state.percent=0;
+  state.barEl=ins.selectComponent(".voyo-vf-rotate-thumb-bar");
+  state.imgEl=ins.selectComponent(".voyo-vf-rotate-figure-image");
+  state.imgEl.setStyle({
+    transform:"rotate("+state.rotateStart+"deg)"
+  })
+  state.initEnd=true;
+}
+
+var setRotate=function(v1,v0,ins){
+  // state.currentX=undefined;
+  // state.originLeft=0;
+  // state.percent=0;
+  // state.barEl=ins.selectComponent(".voyo-vf-rotate-thumb-bar");
+  // state.imgEl=ins.selectComponent(".voyo-vf-rotate-figure-image");
+  // state.barEl.setStyle({
+  //   transform:"translate3d(0,0,0)"
+  // })
+  // state.imgEl.setStyle({
+  //   transform:"rotate(0)"
+  // })
+
+}
+
+module.exports={
+  touchStart:touchStart,
+  touchMove:touchMove,
+  touchEnd:touchEnd,
+  valueChange:valueChange
+}

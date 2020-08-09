@@ -1,0 +1,77 @@
+@import "~@voyo/core-style/lib/components-dep.scss";
+.voyo-vf-rotate-figure{
+  position:relative;
+  @include Center();
+}
+
+%voyo-vf-rotate-figure{
+  width:$--voyo-vf-r-figure-width;
+  height:$--voyo-vf-r-figure-height;
+  border-radius:50%;
+  position:relative;
+  background:$--voyo-vf-r-figure-bg;
+}
+.voyo-vf-rotate-figure-container{
+  @extend %voyo-vf-rotate-figure;
+  ._image{
+    @include Full();
+    border-radius:50%;
+  }
+  ._iconImg{
+    width:$--voyo-vf-r-figure-width*.5;
+    height:$--voyo-vf-r-figure-height*.5;
+  }
+  ._image0{
+    display:none;
+  }
+  ._title{
+    @include Full();
+    border-radius:50%;
+    background:$--voyo-vf-r-figure-bg;
+  }
+}
+.voyo-vf-rotate-figure-image{
+  @extend %voyo-vf-rotate-figure;
+  will-change:transform;
+  opacity:1;
+  overflow:hidden;
+  border:3px solid var(--color-primary-gentle);
+}
+.voyo-vf-rotate-thumb-wrapper{
+  padding:$--voyo-vf-r-thumb-padding;
+}
+.voyo-vf-rotate-thumb{
+  height:$--voyo-vf-r-thumb-height;
+  border-radius:$--voyo-vf-r-thumb-radius;
+  width:100%;
+  background:$--voyo-vf-r-thumb-bg;
+  position:relative;
+}
+.voyo-vf-rotate-thumb-bar{
+  background:$--voyo-vf-r-thumbbar-bg;
+  border-radius:$--voyo-vf-r-thumbbar-radius;
+  width:$--voyo-vf-r-thumbbar-len;
+  height:$--voyo-vf-r-thumbbar-len;
+  position:absolute;
+  top:0 - ($--voyo-vf-r-thumbbar-len - $--voyo-vf-r-thumb-height)/2;
+  left:0;
+  @include Shadow(tap);
+  @include AfterAllBorder($--voyo-vf-r-thumbbar-radius*2);
+}
+.voyo-vf-rotate-thumb-message{
+  @include Center();
+  color:var(--color-font-des);
+  margin-top:$--voyo-vf-r-thumbbar-len/2+1em;
+  height:$--voyo-vf-r-thumb-message-h;
+  font-size:var(--size-font-small);
+}
+
+.voyo-rf-rotate-popup{
+  position:relative;
+  background:$--voyo-vf-r-bg;
+  padding:$--voyo-vf-r-padding;
+  width:$--voyo-vf-r-width;
+  max-width:$--voyo-vf-r-max-width;
+  min-width:$--voyo-vf-r-min-width;
+  @include Radius();
+}

@@ -1,0 +1,16 @@
+{
+  "name": "@voyo/ui-uni",
+  "version": "1.0.0",
+  "description": "",
+  "main": "components/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {},
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@voyo/core-style": "github:zhantewei2/voyo-core-style#master",
+    "vue": "^2.6.11"
+  }
+}
