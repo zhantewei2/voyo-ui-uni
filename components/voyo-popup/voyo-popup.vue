@@ -17,6 +17,9 @@
           appear ? '__appear-' + type : '',
           useCloseBtn ? '__width-close-icon' : '',
         ]"
+        :style="{
+          width:width
+        }"
       >
         <voyo-button-icon
           color="secondary"
@@ -64,6 +67,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    width:{
+      type:String,
+      default:''
+    }
   },
   watch: {
     show: {
