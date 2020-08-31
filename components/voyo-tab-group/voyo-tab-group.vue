@@ -1,5 +1,9 @@
 <template>
-  <view :class="[page ? 'voyo-tab-page' : '', gentle ? 'gentle' : '']">
+  <view :class="[
+    page=='inner' ? 'voyo-tab-page' : '',
+    page=='page' ? 'voyo-page':'',
+    gentle ? 'gentle' : '']"
+  >
     <slot></slot>
   </view>
 </template>
@@ -23,8 +27,8 @@ export default {
       default: 0,
     },
     page: {
-      type: Boolean,
-      default: false,
+      type: String, // page|inner
+      default: "inner",
     },
     gentle: {
       type: Boolean,

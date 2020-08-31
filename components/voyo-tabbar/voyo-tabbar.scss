@@ -19,6 +19,6 @@
   box-sizing: border-box;
   width:100%;
   &.__active{
-    color:var(--color-primary);
+    color:$--voyo-tab-bar-active-color;
   }
 }
