@@ -20,7 +20,7 @@
         :lazy-load="uniLazy"
         v-if="value"
         :style="{
-        height: imgHeight ? imgHeight + 'px' : '',
+        height: imgHeight===0||imgHeight? (imgHeight + 'px') : '' ,
         width: '100%',
       }"
         @load="imageSuccess"
@@ -44,7 +44,7 @@
     data() {
       return {
         value: "",
-        imgHeight: "",
+        imgHeight: null,
         loading: false,
         loadEnd: false,
         loadImg: setting.imgLoadImg,
@@ -190,7 +190,6 @@
           bottom:50
         })
         intersectionObserver.observe(".voyo-img-container",entry=>{
-          console.debug("image entry");
           this.imageLoadStart();
           intersectionObserver.disconnect();
         })
@@ -209,8 +208,8 @@
       if (this.imgWidth) {
         this.calHeight(this.imgWidth);
       }
+      if(this.aspect)this.imgHeight=0;
     },
-
     mounted() {
       let lazyListAncestor;
 
@@ -223,17 +222,20 @@
           this.lazyListAncestorCompleteOrder.unsubscribe();
         })
       }
-
       if (!this.imgWidth && (this.aspect || this.autoHeight)) {
-        uni
-          .createSelectorQuery()
-          .in(this)
-          .select("#img-container")
-          .boundingClientRect()
-          .exec(([rect]) => {
-            this.calHeight(rect.width);
-            if(this.lazyList&&lazyListAncestor)lazyListAncestor.descendantInitComplete();
-          });
+
+        setTimeout(()=>{
+          uni
+            .createSelectorQuery()
+            .in(this)
+            .select("#img-container")
+            .boundingClientRect()
+            .exec(([rect]) => {
+              this.calHeight(rect.width);
+              if(this.lazyList&&lazyListAncestor)lazyListAncestor.descendantInitComplete();
+            });
+        })
+
       }
     },
   };
