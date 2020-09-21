@@ -9,6 +9,7 @@
 </template>
 <script>
 import { ExcuteAfterConnected } from "../utils/excuteAfterConnected";
+import {isH5} from "../utils";
 export default {
   /**
    * activeIndex: number
@@ -40,17 +41,30 @@ export default {
       immediate: true,
       handler(v) {
         this.setIndex(v);
-      },
+      }
     },
   },
   beforeCreate() {
     this.excuteAfterConnected = new ExcuteAfterConnected();
   },
   mounted() {
-    this.$children.forEach((i) => {
-      if (i.$data.componentName === "voyo-tabs") this.tabs = i;
-      if (i.$data.componentName === "voyo-tabbars") this.tabbars = i;
-    });
+
+    if(isH5){
+      this.$slots.default.forEach((i) => {
+        const componentInstance=i.componentInstance;
+        const componentName=i.componentInstance.$data.componentName;
+        if (componentName === "voyo-tabs") this.tabs = componentInstance;
+        if (componentName === "voyo-tabbars") this.tabbars = componentInstance;
+      });
+    }else{
+      this.$children.forEach((i)=>{
+        const componentName=i.$data.componentName;
+        if (componentName === "voyo-tabs") this.tabs = i;
+        if (componentName === "voyo-tabbars") this.tabbars = i;
+      })
+    }
+
+
     if (!this.tabs || !this.tabbars)
       throw new Error("A lack of tabs or tabbars");
     this.tabbars.$on("input", (index) => {
