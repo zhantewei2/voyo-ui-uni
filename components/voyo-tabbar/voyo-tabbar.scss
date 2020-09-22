@@ -11,6 +11,7 @@
 }
 .voyo-tabbar-item{
   @include ICenter();
+  position:relative;
   font-size:$--voyo-tab-bar-item-font-size;
   height:$--voyo-tab-bar-item-h;
   color:$--voyo-tab-bar-item-color;
