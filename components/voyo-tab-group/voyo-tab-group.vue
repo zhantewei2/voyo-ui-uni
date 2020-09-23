@@ -48,7 +48,6 @@ export default {
     this.excuteAfterConnected = new ExcuteAfterConnected();
   },
   mounted() {
-
     if(isH5){
       this.$slots.default.forEach((i) => {
         const componentInstance=i.componentInstance;

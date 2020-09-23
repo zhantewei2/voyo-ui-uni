@@ -7,7 +7,7 @@ export type ExcuteAfterConnectedWait=(() => void)|({
 })
 
 export class ExcuteAfterConnected{
-  isConnected: boolean=false;
+  isConnected: boolean;
   waitQueue: Array<ExcuteAfterConnectedWait>=[];
   connect=()=>{
     if(this.isConnected)return;
