@@ -3,23 +3,41 @@
 @import "~@voyo/core-style/lib/components-var.scss";
 
 
-:host{
-  @include Flex-auto();
-  min-width:$--voyo-tab-bar-item-mini-w;
-  position:relative;
-  background:$--voyo-tab-bar-bg;
-}
-.voyo-tabbar-item{
-  @include ICenter();
-  position:relative;
-  font-size:$--voyo-tab-bar-item-font-size;
-  height:$--voyo-tab-bar-item-h;
-  color:$--voyo-tab-bar-item-color;
-  padding:$--voyo-tab-bar-item-padding;
-  text-align:center;
-  box-sizing: border-box;
-  width:100%;
-  &.__active{
-    color:$--voyo-tab-bar-active-color;
+@if $--voyo-platform-h5{
+  .voyo-tabbar-item {
+    @include ICenter();
+    @include Flex-auto();
+    position:relative;
+    font-size:$--voyo-tab-bar-item-font-size;
+    height:$--voyo-tab-bar-item-h;
+    color:$--voyo-tab-bar-item-color;
+    padding:$--voyo-tab-bar-item-padding;
+    text-align:center;
+    box-sizing: border-box;
+    width:100%;
+    min-width:$--voyo-tab-bar-item-mini-w;
+    background:$--voyo-tab-bar-bg;
+    &.__active{
+      color:$--voyo-tab-bar-active-color;
+    }
   }
-}
+}else{
+  :host{
+    @include Flex-auto();
+    min-width:$--voyo-tab-bar-item-mini-w;
+    position:relative;
+    background:$--voyo-tab-bar-bg;
+  }
+  .voyo-tabbar-item{
+    @include ICenter();
+    font-size:$--voyo-tab-bar-item-font-size;
+    height:$--voyo-tab-bar-item-h;
+    color:$--voyo-tab-bar-item-color;
+    padding:$--voyo-tab-bar-item-padding;
+    text-align:center;
+    box-sizing: border-box;
+    width:100%;
+    &.__active{
+      color:$--voyo-tab-bar-active-color;
+    }
+  }
