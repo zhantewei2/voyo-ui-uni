@@ -12,9 +12,9 @@
       @scroll="onScroll"
     >
       <!--      <view class="voyo-pagination-refresher"> </view>-->
-
       <view
         class="voyo-pagination-content"
+        data-voyo-type="voyo-tab-slot-wrapper"
         v-if="(cache === 'instance' && showContent) || cache !== 'instance'"
       >
         <slot></slot>

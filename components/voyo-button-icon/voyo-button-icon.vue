@@ -10,6 +10,7 @@
       '__' + color,
       rippleCbValue ? 'ripple-callback' : '',
     ]"
+    @tap="btnTap"
     :disabled="disabled"
   >
     <slot></slot>
@@ -53,6 +54,10 @@ export default {
     rippleCb(active) {
       this.rippleCbValue = active;
     },
+    btnTap(e){
+      this.$emit("click",e);
+      this.$emit("tap",e);
+    }
   },
 };
 </script>

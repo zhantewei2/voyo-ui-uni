@@ -26,7 +26,7 @@
           type="candy"
           size="mini"
           class="_close-icon"
-          @tap="closeTap"
+          @click="closeTap"
           v-if="useCloseBtn"
         >
           <text :class="[closeIconClassName]"></text>

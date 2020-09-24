@@ -29,6 +29,7 @@
   </view>
 </template>
 <script>
+import { isH5 } from "../utils";
 import { forkJoin, of, Observable, merge } from "rxjs";
 import { ExcuteAfterConnected } from "../utils/excuteAfterConnected";
 export default {
@@ -68,14 +69,14 @@ export default {
     this.currentIndex = null;
   },
   mounted() {
-    const sideItemList = (this.itemList = this.$children.filter(
+    const sideItemList = this.itemList = (isH5?this.$slots.default.map(i=>i.componentInstance):this.$children).filter(
       (componentInstance, index) => {
         if (componentInstance.$data.componentName === "voyo-sidebar-item") {
           componentInstance.sideIndex = index;
           return true;
         }
       },
-    ));
+    );
     let thumbHeight = 0;
     const subList = sideItemList
       .map((item) =>

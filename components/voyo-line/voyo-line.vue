@@ -1,5 +1,5 @@
 <template>
-  <view class="voyo-line" @touchstart="line.start" @touchend="line.end">
+  <view  @tap="lineTap" class="voyo-line" @touchstart="line.start" @touchend="line.end">
     <view
       class="voyo-line-content"
       :class="[disableBorder ? '.__disableBorder' : '']"
@@ -61,6 +61,12 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  methods: {
+    lineTap(e) {
+      this.$emit("click",e);
+      this.$emit("tap",e);
+    }
   },
 };
 </script>

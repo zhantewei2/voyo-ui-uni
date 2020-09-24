@@ -21,7 +21,7 @@
       color:$--voyo-tab-bar-active-color;
     }
   }
-}else{
+}@else{
   :host{
     @include Flex-auto();
     min-width:$--voyo-tab-bar-item-mini-w;
@@ -41,3 +41,6 @@
       color:$--voyo-tab-bar-active-color;
     }
   }
+}
+
+

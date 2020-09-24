@@ -19,6 +19,7 @@
     }"
     :disabled="disabled"
     :open-type="openType"
+    @tap="btnTap"
     @getuserinfo="getuserinfo"
     @opensetting="opensetting"
   >
@@ -101,6 +102,10 @@ export default {
     },
     opensetting(e){
       this.$emit("opensetting",e);
+    },
+    btnTap(e){
+      this.$emit("click",e);
+      this.$emit("tap",e);
     }
   }
 }

@@ -29,7 +29,7 @@
   </view>
 </template>
 <script lang="ts">
-  import { isTab } from "../utils/findComponent";
+  import { isTabParent } from "../utils/findComponent";
   import { PaginationParams } from "./voyo-pg.lib";
   import { setting } from "../setting.service";
 
@@ -109,10 +109,11 @@
     mounted(this: any) {
       if (!this.paginationFn) throw Error("voyo-pg: must call getPaginationFn");
 
-      let tab: any = (this.tab = this.$parent);
-      tab.$data.usePagination = true;
-      if (!isTab(tab))
+      let tab: any =  this.$parent;
+      if (!(tab=isTabParent(tab)))
         throw new Error("voyo-pagination must be child of tab component");
+      this.tab=tab;
+      tab.$data.usePagination = true;
       tab.$data.upperThreshold = this.upperThreshold;
       tab.$data.lowerThreshold = this.lowerThreshold;
       tab.scrollEvent.subscribe(async ({ event }) => {

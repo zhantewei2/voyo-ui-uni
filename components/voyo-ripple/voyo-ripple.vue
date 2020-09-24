@@ -50,14 +50,12 @@ export default {
   },
   methods:{
     touchStart(e){
-
       const touchEvent=e.touches[0];
-      wx.createSelectorQuery()
+      uni.createSelectorQuery()
               .in(this)
               .select('#ripple-wrapper')
               .boundingClientRect()
-              .exec((client)=>{
-                console.log(client)
+              .exec(([client])=>{
                 const {top,left,width}=client;
                 this.createRipple(
                         touchEvent.clientX-left-this.rippleHalfSize+"px",
