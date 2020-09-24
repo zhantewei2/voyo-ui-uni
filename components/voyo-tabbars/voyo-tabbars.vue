@@ -28,6 +28,8 @@
 </template>
 <script>
 import { of, forkJoin, merge } from "rxjs";
+import {isH5} from "../utils";
+
 export default {
   props: {
     value: {
@@ -95,10 +97,10 @@ export default {
     if (this.standAlone) this.setIndex(this.value);
   },
   mounted() {
-    this.tabbarList = this.$children.filter(
+
+    this.tabbarList = (isH5?this.$slots.default.map(i=>i.componentInstance):this.$children).filter(
       (vNode) => vNode.$data.componentName === "voyo-tabbar",
     );
-
     uni
       .createSelectorQuery()
       .in(this)
@@ -183,6 +185,7 @@ export default {
         this.preTabbar.toDisActive();
       }
       currentTabbar.toActive();
+
       this.preTabbar = currentTabbar;
     },
     untilReady(cb) {

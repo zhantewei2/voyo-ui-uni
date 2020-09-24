@@ -52,18 +52,19 @@ export default {
     touchStart(e){
 
       const touchEvent=e.touches[0];
-      getClientRect({
-        component:this,
-        querySelector:"#ripple-wrapper",
-        el:this.$refs.wrapper
-      }).then(client=>{
-        const {top,left,width}=client;
-        this.createRipple(
-          touchEvent.clientX-left-this.rippleHalfSize+"px",
-          touchEvent.clientY-top-this.rippleHalfSize+"px",
-          this.autoSizeByWidth(width)+"px"
-        );
-      });
+      wx.createSelectorQuery()
+              .in(this)
+              .select('#ripple-wrapper')
+              .boundingClientRect()
+              .exec((client)=>{
+                console.log(client)
+                const {top,left,width}=client;
+                this.createRipple(
+                        touchEvent.clientX-left-this.rippleHalfSize+"px",
+                        touchEvent.clientY-top-this.rippleHalfSize+"px",
+                        this.autoSizeByWidth(width)+"px"
+                );
+              })
       this.wrapperStart();
       this.callbackStart();
     },

@@ -11,6 +11,7 @@
 <script>
 import { ExcuteAfterConnected } from "../utils/excuteAfterConnected";
 import { Subject, merge } from "rxjs";
+import { isH5 } from "../utils";
 export default {
   props: {
     height: {
@@ -53,7 +54,11 @@ export default {
   },
   mounted() {
     let tabIndex = 0;
-    this.tabList = this.$children.filter((componentInstance) => {
+    this.tabList = (
+      isH5?
+      this.$slots.default.map(i=>i.componentInstance):
+      this.$children
+    ).filter((componentInstance) => {
       if (componentInstance.$data.componentName === "voyo-tab") {
         componentInstance.tabIndex = tabIndex;
         this.tabStatList.push({ tabIndex, top: 0, tab: componentInstance });
