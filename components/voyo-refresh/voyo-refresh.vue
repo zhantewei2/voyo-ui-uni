@@ -32,7 +32,6 @@
       </view>
     </view>
 
-    <!-- #ifdef MP-WEIXIN -->
     <view
       @touchmove="controller.touchmove"
       @touchstart="controller.touchstart"
@@ -40,25 +39,23 @@
       @touchcancel="controller.touchend"
       @animationend="controller.animationend"
       class="voyo-refresh-wrapper"
-      id="voyo-refresh-wrapper"
     >
       <slot></slot>
     </view>
-    <!-- #endif -->
-    <!-- #ifdef H5 -->
-    <view>
-      <view
-        @touchmove="controller.touchmove"
-        @touchstart="controller.touchstart"
-        @touchend="controller.touchend"
-        @touchcancel="controller.touchend"
-        class="voyo-refresh-wrapper"
-        id="voyo-refresh-wrapper"
-      >
-        <slot></slot>
-      </view>
-    </view>
-    <!--    #endif-->
+<!--    &lt;!&ndash; #ifdef H5 &ndash;&gt;-->
+<!--    <view>-->
+<!--      <view-->
+<!--        @touchmove="controller.touchmove"-->
+<!--        @touchstart="controller.touchstart"-->
+<!--        @touchend="controller.touchend"-->
+<!--        @touchcancel="controller.touchend"-->
+<!--        class="voyo-refresh-wrapper"-->
+<!--        id="voyo-refresh-wrapper"-->
+<!--      >-->
+<!--        <slot></slot>-->
+<!--      </view>-->
+<!--    </view>-->
+<!--    &lt;!&ndash;    #endif&ndash;&gt;-->
   </view>
 </template>
 <script src="./voyo-refresh.wxs" lang="wxs" module="controller"></script>

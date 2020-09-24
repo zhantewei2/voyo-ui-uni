@@ -2,7 +2,8 @@
   <view :class="[
     page=='inner' ? 'voyo-tab-page' : '',
     page=='page' ? 'voyo-page':'',
-    gentle ? 'gentle' : '']">
+    gentle ? 'gentle' : '']"
+  >
     <slot></slot>
   </view>
 </template>

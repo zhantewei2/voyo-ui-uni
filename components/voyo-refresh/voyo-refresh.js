@@ -1,4 +1,5 @@
 import {setting}from "../setting.service";
+console.log("ss",setting.refresh.triggerIcon);
 export default {
   props: {
     enabled: {

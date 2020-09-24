@@ -1,5 +1,5 @@
 <template>
-  <view class="voyo-an-fadeIn0" :class="[typeClass]">
+  <view @tap="viewTap" class="voyo-an-fadeIn0" :class="[typeClass]">
     <image class="_image" :src="setting.errorImg"></image>
     <view class="_title">
       <slot></slot>
@@ -29,5 +29,11 @@ export default {
       setting,
     };
   },
+  methods:{
+    viewTap(e){
+      this.$emit("click",e);
+      this.$emit("tap",e);
+    }
+  }
 };
 </script>

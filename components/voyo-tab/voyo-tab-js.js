@@ -1,4 +1,4 @@
-import { Subject, merge, Observable } from "rxjs";
+import { Subject, merge, Observable,of } from "rxjs";
 import { debounceTime, map, mergeMap } from "rxjs/operators";
 import { ExcuteAfterConnected } from "../utils/excuteAfterConnected";
 
@@ -94,6 +94,9 @@ export default {
       .scrollOffset();
 
     this.scrollEvent = merge(
+      of({
+          detail:{scrollTop:0}
+      }),
       this.scrollSubject,
       this.scrollSubject.pipe(
         debounceTime(150),
@@ -122,8 +125,8 @@ export default {
     this.scrollEvent.subscribe(async ({ event }) => {
       if (!this.usePagination) return;
       detail=event.detail;
+      if(!detail.scrollHeight)return;
       const viewHeight = await this.getViewHeight();
-
       bottomHeight = detail.scrollHeight - detail.scrollTop;
       bottomMinHeight = viewHeight + this.lowerThreshold;
 
