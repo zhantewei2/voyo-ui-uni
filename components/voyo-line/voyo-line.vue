@@ -45,6 +45,7 @@ module.exports={
 }
 </script>
 <script>
+  import {isH5} from "../utils";
 export default {
   data() {
     return {
@@ -64,8 +65,10 @@ export default {
   },
   methods: {
     lineTap(e) {
-      this.$emit("click",e);
-      this.$emit("tap",e);
+      if(isH5){
+        this.$emit("click",e);
+        this.$emit("tap",e);
+      }
     }
   },
 };

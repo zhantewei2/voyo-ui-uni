@@ -8,6 +8,7 @@
 </template>
 <script>
 import { setting } from "../setting.service";
+import {isH5} from "../utils"
 export default {
   props: {
     type: {
@@ -31,8 +32,10 @@ export default {
   },
   methods:{
     viewTap(e){
-      this.$emit("click",e);
-      this.$emit("tap",e);
+      if(isH5){
+        this.$emit("click",e);
+        this.$emit("tap",e);
+      }
     }
   }
 };

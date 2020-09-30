@@ -44,6 +44,7 @@
 // export type SizeVarious="mini"|"small"|"now"|"medium"|"strong"|"large";
 // export type BtnTypeVarious="appear"|"outline"|"pure"|"candy";
 import Vue from "vue";
+import {isH5} from "../utils";
 export default {
   data(){
     return {
@@ -104,8 +105,10 @@ export default {
       this.$emit("opensetting",e);
     },
     btnTap(e){
-      this.$emit("click",e);
-      this.$emit("tap",e);
+      if(isH5){
+        this.$emit("click",e);
+        this.$emit("tap",e);
+      }
     }
   }
 }

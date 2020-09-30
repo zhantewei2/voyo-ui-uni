@@ -9,6 +9,7 @@
 
 <script>
 import { setting } from "../setting.service";
+import {isH5} from "../utils";
 export default {
   data() {
     return {
@@ -17,8 +18,10 @@ export default {
   },
   methods: {
     viewTap(e) {
-      this.$emit("tap",e);
-      this.$emit("click",e);
+      if(isH5){
+        this.$emit("tap",e);
+        this.$emit("click",e);
+      }
     }
   },
 };
