@@ -43,7 +43,6 @@ export default {
     type: {
       //type mid left top bottom right
       type: String,
-      required: true,
       default: "bottom",
     },
     appear: {

@@ -109,11 +109,9 @@
         default:-100
       },
       lazyLoad:{
-        type:Boolean,
         default:false
       },
       lazyList:{
-        type:Boolean,
         default:false
       },
       index:null
