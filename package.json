@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@voyo/http": "^2.2.0"
+    "@voyo/http": "^2.2.0",
+    "@ztwx/utils": "0.0.5"
   },
   "author": "",
   "license": "ISC",

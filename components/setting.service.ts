@@ -1,6 +1,5 @@
 import { PaginationSetting } from "./voyo-pg/voyo-pg.lib";
 declare let getApp: any;
-console.log("setting");
 const app = getApp() || {};
 const VoyoSettingKey = "voyo-setting";
 
