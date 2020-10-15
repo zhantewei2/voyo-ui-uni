@@ -1,6 +1,7 @@
 <template>
   <view
       id="img-container"
+      ref="imgContainer"
       :class="[
       'voyo-img-container',
       allClass,
@@ -38,7 +39,7 @@
 <script>
   import { ExcuteAfterConnected } from "../utils";
   import { setting } from "../setting.service";
-  import { systemInfo } from "../utils/common";
+  import { systemInfo,platform ,isH5} from "../utils/common";
 
   export default {
     data() {
@@ -181,18 +182,25 @@
           return null;
         }
       },
-      watchIntersection(){
-        const intersectionObserver=this.createIntersectionObserver()
-
-        intersectionObserver.relativeToViewport({
-          bottom:50
-        })
-        intersectionObserver.observe(".voyo-img-container",entry=>{
-          this.imageLoadStart();
-          intersectionObserver.disconnect();
-        })
+      watchIntersection() {
+        if (!isH5) {
+          this.miniIntersectionObserver = this.createIntersectionObserver();
+          miniIntersectionObserver.relativeToViewport({
+            bottom: 50
+          })
+          miniIntersectionObserver.observe(".voyo-img-container", entry => {
+            this.imageLoadStart();
+            miniIntersectionObserver.disconnect();
+          })
+        }else{
+          this.lazyListAncestor.observe(this.$refs['imgContainer'].$el,({visible,unsubscribe})=>{
+            if(visible){
+              this.imageLoadStart();
+              unsubscribe();
+            }
+          }).then((order)=>this.h5IntersectionOrder=order);
+        }
       }
-
     },
     beforeCreate() {
       this.viewWidth = 0;
@@ -201,6 +209,8 @@
       this.visible0 = true;
       this.rectTop=0;
       this.ancestorLazyListName="voyo-img-lazy-list";
+      this.miniIntersectionObserver=null;
+      this.h5IntersectionOrder=null;
     },
     created() {
       if (this.imgWidth) {
@@ -209,19 +219,18 @@
       if(this.aspect)this.imgHeight=0;
     },
     mounted() {
-      let lazyListAncestor;
+      this.lazyListAncestor=null;
 
       if(this.lazyList){
-        lazyListAncestor=this.findLazyListAncestor(this);
-        if(!lazyListAncestor)return;
-        lazyListAncestor.descendantRegistry();
-        this.lazyListAncestorCompleteOrder=lazyListAncestor.lazyDescendantComplete.subscribe(()=>{
+        this.lazyListAncestor=this.findLazyListAncestor(this);
+        if(!this.lazyListAncestor)return;
+        this.lazyListAncestor.descendantRegistry();
+        this.lazyListAncestorCompleteOrder=this.lazyListAncestor.lazyDescendantComplete.subscribe(()=>{
           this.watchIntersection();
-          this.lazyListAncestorCompleteOrder.unsubscribe();
+          // this.lazyListAncestorCompleteOrder.unsubscribe();
         })
       }
       if (!this.imgWidth && (this.aspect || this.autoHeight)) {
-
         setTimeout(()=>{
           uni
             .createSelectorQuery()
@@ -230,12 +239,17 @@
             .boundingClientRect()
             .exec(([rect]) => {
               this.calHeight(rect.width);
-              if(this.lazyList&&lazyListAncestor)lazyListAncestor.descendantInitComplete();
+              if(this.lazyList&&this.lazyListAncestor)this.lazyListAncestor.descendantInitComplete();
             });
         })
-
       }
     },
+    beforeDestroy() {
+      try{
+        this.miniIntersectionObserver&&this.miniIntersectionObserver.disconnect();
+        this.h5IntersectionOrder&&this.h5IntersectionOrder.unsubscribe();
+      }catch (e) {}
+    }
   };
 </script>
 
