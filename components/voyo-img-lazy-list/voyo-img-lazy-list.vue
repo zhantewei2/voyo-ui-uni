@@ -10,9 +10,9 @@
 
 <script>
   import { Subject } from "rxjs";
-  import { isH5 } from "@voyo/ui-uni/components/utils/common";
-  import { createScrollIntersection } from "@voyo/ui-uni/components/utils/scrollIntersection";
-  import { ExcuteAfterConnected } from "@voyo/ui-uni/components/utils/excuteAfterConnected";
+  import { isH5 } from "../utils/common";
+  import { createScrollIntersection } from "../utils/scrollIntersection";
+  import { ExcuteAfterConnected } from "../utils/excuteAfterConnected";
 
   export default {
     beforeCreate() {
