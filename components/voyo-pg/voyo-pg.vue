@@ -63,6 +63,13 @@
         default: "暂无数据",
       },
       info: undefined,
+      settingType:{
+        type:String,
+        default:"default"
+      },
+      pageSize:{
+        type:Number
+      }
     },
     data() {
       return {
@@ -87,12 +94,19 @@
           this.isEnd = v;
         },
       },
+      settingType:{
+        immediate:true,
+        handler(type){
+          this.currentSetting=setting.paginationSetting[type];
+        }
+      }
     },
     beforeCreate() {
       this.parentHeight = null;
       this.pgCurrentPage = 1;
       this.paginationFn = null;
       this.tab = null;
+      this.currentSetting=null;
     },
     created(): void {
       /**
@@ -134,6 +148,7 @@
           currentPage: 1,
           behavior: "refresh",
           info: this.info,
+          pageSize:this.pageSize
         };
         this.refreshLoad();
         return this.paginationFn(params)
@@ -156,11 +171,11 @@
        * @return
        * **/
       handleResult(params: PaginationParams, res: any): Boolean {
-        if (setting.paginationSetting.isEmpty(params, res)) {
+        if (this.currentSetting.isEmpty(params, res)) {
           this.setEmpty();
           this.refreshSuccess();
           return false;
-        } else if (setting.paginationSetting.isError(params, res)) {
+        } else if (this.currentSetting.isError(params, res)) {
           if (params.behavior === "down") {
             this.downLoadFailure();
           } else if (params.behavior === "init") {
@@ -179,7 +194,7 @@
             this.pgCurrentPage += 1;
           }
 
-          if (setting.paginationSetting.isEnd(params, res)) {
+          if (this.currentSetting.isEnd(params, res)) {
             this.downLoadComplete();
           }
           return true;
@@ -213,6 +228,7 @@
           currentPage: this.pgCurrentPage = 1,
           behavior: "init",
           info: this.info,
+          pageSize:this.pageSize,
         };
         this.tab.disableScrollUnOfficial();
         return this.paginationFn(params)
@@ -237,6 +253,7 @@
           currentPage: this.pgCurrentPage + 1,
           behavior: "down",
           info: this.info,
+          pageSize:this.pageSize
         };
         return this.paginationFn(params)
           .toPromise()
@@ -320,4 +337,6 @@
     },
   };
 </script>
+
+
 

@@ -5,6 +5,7 @@ export interface PaginationParams{
   currentPage:number;
   behavior:PaginationBehavior;
   info?:any;
+  pageSize?:number;
 }
 
 export interface PaginationFn<Result>{

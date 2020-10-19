@@ -2,7 +2,7 @@
   <view  @tap="lineTap" class="voyo-line" @touchstart="line.start" @touchend="line.end">
     <view
       class="voyo-line-content"
-      :class="[disableBorder ? '.__disableBorder' : '']"
+      :class="[disableBorder ? '__disableBorder' : '']"
     >
       <span class="voyo-line-cell">
         <span v-if="$slots.leftIcon" class="_leftIcon">

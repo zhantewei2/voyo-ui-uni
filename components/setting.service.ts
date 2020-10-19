@@ -28,7 +28,7 @@ export class Setting {
   emptyImg: string = "";
   popupCloseIconClassName: string = "";
   //@ts-ignore;
-  paginationSetting: PaginationSetting<any>;
+  paginationSetting:Record<'default'|string, PaginationSetting<any>>;
   vfRotateImgs: string[] = [];
   vfRotateSuccessImg: string = "";
   vfRotateFailImg: string = "";
