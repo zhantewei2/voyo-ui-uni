@@ -185,12 +185,12 @@
       watchIntersection() {
         if (!isH5) {
           this.miniIntersectionObserver = this.createIntersectionObserver();
-          miniIntersectionObserver.relativeToViewport({
+          this.miniIntersectionObserver.relativeToViewport({
             bottom: 50
           })
-          miniIntersectionObserver.observe(".voyo-img-container", entry => {
+          this.miniIntersectionObserver.observe(".voyo-img-container", entry => {
             this.imageLoadStart();
-            miniIntersectionObserver.disconnect();
+            this.miniIntersectionObserver.disconnect();
           })
         }else{
           this.lazyListAncestor.observe(this.$refs['imgContainer'].$el,({visible,unsubscribe})=>{
