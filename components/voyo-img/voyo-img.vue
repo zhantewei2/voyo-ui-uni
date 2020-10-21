@@ -1,5 +1,6 @@
 <template>
   <view
+      @tap="imgTap"
       id="img-container"
       ref="imgContainer"
       :class="[
@@ -133,6 +134,11 @@
       },
     },
     methods: {
+      imgTap(e){
+        if(isH5){
+          this.$emit("click",e);
+        }
+      },
       visibleToggle(v) {
         if (v && this.loadEnd) this.showImage();
         this.visible0 = v;
