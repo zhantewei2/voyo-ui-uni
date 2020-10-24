@@ -76,9 +76,11 @@ export default {
         this.setHeight(v);
       },
     },
-    initContent(v) {
+    initContent:{
+      immediate:true,
+      handler(v) {
       v && this.contentExcute.connect();
-    },
+    }},
   },
   beforeCreate() {
     this.scrollSubject = new Subject();
