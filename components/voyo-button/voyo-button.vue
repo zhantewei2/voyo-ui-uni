@@ -17,6 +17,7 @@
     :style="{
       width: width ? width + 'px' : '',
     }"
+    :hover-class="hoverClass"
     :disabled="disabled"
     :open-type="openType"
     @tap="btnTap"
@@ -92,6 +93,10 @@ export default {
     },
     "width":{
       type:Number
+    },
+    "hoverClass":{
+      type:String,
+      default:"btn-hover"
     }
   },
   methods:{

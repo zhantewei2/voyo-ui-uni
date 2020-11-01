@@ -22,7 +22,7 @@
         }"
       >
         <voyo-button-icon
-          color="secondary"
+          color="primary"
           type="candy"
           size="mini"
           class="_close-icon"
@@ -69,6 +69,10 @@ export default {
     width:{
       type:String,
       default:''
+    },
+    hideAnimate:{
+      type:Boolean,
+      default:true
     }
   },
   watch: {
@@ -110,8 +114,12 @@ export default {
     },
     toHide() {
       if (this.leaving || !this.isShow) return;
-      this.leaving = true;
-      this.setHideTimeout();
+      if(this.hideAnimate){
+        this.leaving=true;
+        this.setHideTimeout()
+      }else{
+        this.setIsShow(this.leaving=false);
+      }
     },
     tapBg() {
       if (this.defaultClose) this.toHide();
