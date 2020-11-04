@@ -163,6 +163,9 @@ export default {
       }
       this.scrollSubject.next(e);
     },
+    reCalViewHeight(){
+      this.scrollAreaHeight=0;
+    },
     getViewHeight() {
       return new Promise((resolve, reject) => {
         if (this.scrollAreaHeight) return resolve(this.scrollAreaHeight);
