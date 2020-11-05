@@ -18,7 +18,7 @@
       width: width ? width + 'px' : '',
     }"
     :hover-class="hoverClass"
-    :disabled="disabled"
+    :disabled="disabled||loading"
     :open-type="openType"
     @tap="btnTap"
     @getuserinfo="getuserinfo"
