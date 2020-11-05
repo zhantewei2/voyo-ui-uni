@@ -125,7 +125,7 @@ export default {
     let bottomMinHeight;
     this.touchStartY = 0;
     this.scrollEvent.subscribe(async ({ event }) => {
-      if (!this.usePagination) return;
+      if (!this.usePagination||!event||!event.detail) return;
       detail=event.detail;
       if(!detail.scrollHeight)return;
       const viewHeight = await this.getViewHeight();
