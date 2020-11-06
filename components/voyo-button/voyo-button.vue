@@ -34,7 +34,7 @@
     <slot></slot>
 
     <voyo-ripple
-      v-if="!disabled"
+      v-if="!disabled&&ripple"
       @callback="rippleCb"
       css="ripple-btn"
     ></voyo-ripple>
@@ -97,6 +97,10 @@ export default {
     "hoverClass":{
       type:String,
       default:"btn-hover"
+    },
+    "ripple":{
+      type:Boolean,
+      default:true
     }
   },
   methods:{

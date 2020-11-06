@@ -132,6 +132,7 @@
       tab.$data.lowerThreshold = this.lowerThreshold;
       tab.scrollEvent.subscribe(async ({ event }) => {
         const detail = event.detail;
+        if(!detail)return; //兼容微信
         this.scrollTop = detail.scrollTop;
         if (this.scrollTop === 0 && !this.isScrollUpperBound) {
           this.isScrollUpperBound = true;

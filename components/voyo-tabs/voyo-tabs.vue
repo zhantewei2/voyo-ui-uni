@@ -78,6 +78,7 @@ export default {
       merge(...this.tabList.map((tab) => tab.scrollEvent)).subscribe(
         ({ event, tab }) => {
           index = tab.tabIndex;
+          if(!event.detail)return;
           top = event.detail.scrollTop;
           height = event.detail.scrollHeight;
           this.tabStatList[0].top = top;
