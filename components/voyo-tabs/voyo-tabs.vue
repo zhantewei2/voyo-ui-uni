@@ -1,11 +1,18 @@
 <template>
   <view
-    :style="{
-      position: 'relative',
-      height: height ? height + 'px' : '100%',
-    }"
+      :style="[
+        height?{
+          position:'relative',
+          height:height+'px'
+        }:null
+      ]"
   >
-    <slot></slot>
+    <view v-if="compatibilityFlex1" class="abs-full">
+      <slot></slot>
+    </view>
+    <block else>
+      <slot></slot>
+    </block>
   </view>
 </template>
 <script>
@@ -25,6 +32,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    compatibilityFlex1:{
+      type: Boolean,
+      default:false
+    }
   },
   data() {
     return {
