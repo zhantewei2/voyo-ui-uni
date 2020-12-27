@@ -22,10 +22,10 @@
         :show="initLoading"
         imgType="block"
     ></voyo-load>
-    <voyo-load-error @tap="init" v-if="initError">
+    <voyo-load-error @tap="init" v-if="!bindListLength&&initError">
       {{ errorHint }}
     </voyo-load-error>
-    <voyo-empty @tap="init" v-if="isEmpty">{{ emptyHint }}</voyo-empty>
+    <voyo-empty @tap="init" v-if="!bindListLength&&isEmpty">{{ emptyHint }}</voyo-empty>
   </view>
 </template>
 <script lang="ts">
@@ -38,6 +38,10 @@
    */
   export default {
     props: {
+      bindListLength:{
+        type:Number,
+        default:0
+      },
       upperThreshold: {
         type: Number,
         default: 0,
