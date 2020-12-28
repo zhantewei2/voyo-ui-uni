@@ -22,7 +22,7 @@
         <view class="_placeholder"> {{ placeholder }} </view>
       </label>
       <label class="_input-container">
-        <view class="_input" v-if="onlyTap" @tap="inputTap"> </view>
+        <view class="_input" v-if="onlyTap" @tap="inputTap">{{value0}}</view>
         <view
           class="_input __visual-input"
           v-if="visual"
@@ -150,7 +150,7 @@ export default {
       return this.value0 !== 0 && !this.value0 && !this.isFocus;
     },
     canClear() {
-      return !!this.value0 && this.clearable;
+      return !!this.value0 && this.clearable && this.isFocus;
     },
   },
   data() {
