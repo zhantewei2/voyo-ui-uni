@@ -1,9 +1,10 @@
 <template>
-  <view  @tap="lineTap" class="voyo-line" @touchstart="line.start" @touchend="line.end">
+  <view @longpress="longpress"  @tap="lineTap" class="voyo-line" @touchstart="line.start" @touchend="line.end">
     <view
       class="voyo-line-content"
       :class="[disableBorder ? '__disableBorder' : '']"
     >
+      <slot></slot>
       <span class="voyo-line-cell">
         <span v-if="$slots.leftIcon" class="_leftIcon">
           <slot name="leftIcon"></slot>
@@ -69,6 +70,9 @@ export default {
         this.$emit("click",e);
         this.$emit("tap",e);
       }
+    },
+    longpress(e){
+      this.$emit("longpress",e);
     }
   },
 };
