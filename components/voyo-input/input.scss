@@ -9,7 +9,6 @@
     min-width:1px;
     @include ICenter();
     box-sizing: border-box;
-
   }
   ._container{
     position:relative;
@@ -165,6 +164,11 @@
     ._container{
       @include Radius($--voyo-input-candy-radius);
       background:$--voyo-input-candy-bg;
+    }
+  }
+  &._no-border{
+    ._container::after{
+      display:none !important;
     }
   }
 }
