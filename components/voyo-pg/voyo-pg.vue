@@ -161,7 +161,7 @@
           .then((result) => {
             this.downNoMore = this.downError = false;
             this.handleResult(params, result);
-            this.currentPage = 1;
+            this.pgCurrentPage = 1;
           })
           .catch((err) => {
             this.refreshError(err);
