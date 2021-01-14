@@ -12,6 +12,7 @@
     ]"
     @tap="btnTap"
     :disabled="disabled"
+    :open-type="openType"
   >
     <slot></slot>
     <voyo-ripple @callback="rippleCb" css="ripple-btn"></voyo-ripple>
@@ -33,6 +34,9 @@ export default {
   },
 
   props: {
+    openType:{
+      type:String,
+    },
     size: {
       type: String,
       default: "now",

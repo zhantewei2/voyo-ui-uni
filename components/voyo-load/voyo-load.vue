@@ -25,7 +25,7 @@
         <view class="_img-wrapper">
           <image class="_img" :src="loadImg"></image>
         </view>
-        <view class="_text">
+        <view :class="[$slots.default?'_text':'']">
           <slot></slot>
         </view>
       </view>
