@@ -22,7 +22,7 @@
         :lazy-load="uniLazy"
         v-if="value"
         :style="{
-        height: imgHeight===0||imgHeight? (imgHeight + 'px') : '' ,
+        height: imgHeight===0||imgHeight? (imgHeight+addHeight + 'px') : '' ,
         width: '100%',
       }"
         @load="imageSuccess"
@@ -115,6 +115,10 @@
       },
       lazyList:{
         default:false
+      },
+      addHeight:{ //
+        default:0,
+        type:Number,
       },
       index:null
     },
