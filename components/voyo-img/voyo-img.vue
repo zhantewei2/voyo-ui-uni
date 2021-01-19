@@ -154,7 +154,7 @@
       imageSuccess(e) {
         if (this.autoHeight) {
           this.excuteAfterGetRect.execute(() => {
-            this.imgHeight = (e.detail.height / e.detail.width) * this.viewWidth;
+            this.imgHeight =Math.round( (e.detail.height / e.detail.width) * this.viewWidth);
           });
         }
         this.loading = false;
@@ -173,7 +173,7 @@
       calHeight(w) {
         this.viewWidth = w;
         if (this.aspect) {
-          this.imgHeight = w * this.aspect;
+          this.imgHeight =Math.round( w * this.aspect);
         }
         this.excuteAfterGetRect.connect();
       },

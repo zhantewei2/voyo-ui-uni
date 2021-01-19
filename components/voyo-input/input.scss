@@ -166,7 +166,7 @@
       background:$--voyo-input-candy-bg;
     }
   }
-  &._no-border{
+  &.__no-border{
     ._container::after{
       display:none !important;
     }
