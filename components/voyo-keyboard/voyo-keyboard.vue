@@ -132,6 +132,7 @@ export default {
     },
     handleValue(key: string) {
       let value: string = this.value0 ? this.value0 : "";
+      value=value.toString();
       if (key === "del") {
         value = value.slice(0, -1);
       } else {

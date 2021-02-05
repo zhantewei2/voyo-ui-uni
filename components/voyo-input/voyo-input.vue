@@ -98,9 +98,7 @@
         type: String,
         default: "now",
       },
-      value: {
-        type: String || Number,
-      },
+      value: {},
       type: {
         type: String,
         default: "text",
