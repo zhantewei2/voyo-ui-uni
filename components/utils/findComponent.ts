@@ -23,9 +23,9 @@ const findParentComponent=(componentInstance:Vue,componentName:string,SlotNodeTy
   }else{
     const instance=findComponent(componentInstance,componentName);
     if(instance)return instance;
-    
+
     if(componentInstance.$el&&componentInstance.$el.getAttribute("data-voyo-type")===SlotNodeType){
-        return findParentTarget(componentInstance.$parent,componentName);
+      return findParentTarget(componentInstance.$parent,componentName);
     }else{
       return undefined;
     }
@@ -44,9 +44,16 @@ const isTabbar=(i:Vue)=>findComponent(i,TabbarName);
 
 const isTabParent=(i:Vue)=>findParentComponent(i,TabName,TabSlotName);
 
-const findFromList=(list:Vue[],name:string):Vue|undefined=>{
-  for(let i of list){
-    if(findComponent(i,name))return i;
+const findChildrenFromList=(instance:Vue,name:string):Vue|undefined=>{
+  if(!isH5){
+    for(let child of instance.$children){
+      if(findComponent(child,name))return child;
+    }
+  }else{
+    if(!instance.$slots.default)return;
+    for(let vNode of instance.$slots.default){
+      if(findComponent(vNode.componentInstance,name))return vNode.componentInstance;
+    }
   }
 };
 
@@ -62,5 +69,5 @@ export {
   isTabbars,
   isTabbar,
   isTabParent,
-  findFromList
+  findChildrenFromList
 }
