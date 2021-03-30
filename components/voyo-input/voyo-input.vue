@@ -144,6 +144,7 @@
       value: {
         immediate: true,
         handler(v) {
+          if(v==null)return;
           this.value0 = v;
         },
       },
