@@ -101,59 +101,67 @@ export default {
     this.tabbarList = (isH5?this.$slots.default.map(i=>i.componentInstance):this.$children).filter(
       (vNode) => vNode.$data.componentName === "voyo-tabbar",
     );
-    uni
-      .createSelectorQuery()
-      .in(this)
-      .select(".voyo-tab-bar-container")
-      .boundingClientRect()
-      .select(".voyo-tab-bar-thumb")
-      .boundingClientRect()
-      .exec(([containerRect, thumbRect]) => {
-        this.thumbWidth = thumbRect.width;
-        this.containerWidth = containerRect.width;
-        forkJoin(
-          this.tabbarList.map((i) =>
-            i.mountedComplete ? of(true) : i.mountedSubject,
-          ),
-        ).subscribe((res) => {
-          if (res.every((i) => !!i)) {
-            let thumbLeftTotal = 0;
-            let itemWidth;
-            let scrollLeft;
-            let maxScrollLeft;
+    const run=()=>{
+      uni
+          .createSelectorQuery()
+          .in(this)
+          .select(".voyo-tab-bar-container")
+          .boundingClientRect()
+          .select(".voyo-tab-bar-thumb")
+          .boundingClientRect()
+          .exec(([containerRect, thumbRect]) => {
+            this.thumbWidth = thumbRect.width;
+            this.containerWidth = containerRect.width;
+            forkJoin(
+                this.tabbarList.map((i) =>
+                    i.mountedComplete ? of(true) : i.mountedSubject,
+                ),
+            ).subscribe((res) => {
+              if (res.every((i) => !!i)) {
+                let thumbLeftTotal = 0;
+                let itemWidth;
+                let scrollLeft;
+                let maxScrollLeft;
 
-            this.tabbarList.forEach((vNode, index) => {
-              itemWidth = vNode.$data.width;
-              this.itemListRef.push({
-                index,
-                width: itemWidth,
-                left: thumbLeftTotal,
-                thumbLeft: thumbLeftTotal + itemWidth / 2 - this.thumbWidth / 2,
-              });
-              thumbLeftTotal += itemWidth;
-              vNode.tabbarIndex = index;
+                this.tabbarList.forEach((vNode, index) => {
+                  itemWidth = isH5?vNode.$el.offsetWidth:vNode.$data.width;
+                  this.itemListRef.push({
+                    index,
+                    width: itemWidth,
+                    left: thumbLeftTotal,
+                    thumbLeft: thumbLeftTotal + itemWidth / 2 - this.thumbWidth / 2,
+                  });
+                  thumbLeftTotal += itemWidth;
+                  vNode.tabbarIndex = index;
+                });
+                //scroll position
+                maxScrollLeft = thumbLeftTotal - this.containerWidth;
+                this.itemListRef.forEach((itemRef) => {
+                  scrollLeft =
+                      itemRef.left - this.containerWidth / 2 + itemRef.width / 2;
+                  if (scrollLeft < 0) scrollLeft = 0;
+                  if (scrollLeft > maxScrollLeft) scrollLeft = maxScrollLeft;
+                  itemRef.scrollLeft = scrollLeft;
+                });
+                this.moveViewWidth = thumbLeftTotal + "px";
+                //ready
+                this.readyEnd();
+                this.isReady = true;
+                merge(...this.tabbarList.map((i) => i.tapSubject)).subscribe(
+                    (tabbar) => {
+                      this.setIndex(tabbar.tabbarIndex);
+                    },
+                );
+              }
             });
-            //scroll position
-            maxScrollLeft = thumbLeftTotal - this.containerWidth;
-            this.itemListRef.forEach((itemRef) => {
-              scrollLeft =
-                itemRef.left - this.containerWidth / 2 + itemRef.width / 2;
-              if (scrollLeft < 0) scrollLeft = 0;
-              if (scrollLeft > maxScrollLeft) scrollLeft = maxScrollLeft;
-              itemRef.scrollLeft = scrollLeft;
-            });
-            this.moveViewWidth = thumbLeftTotal + "px";
-            //ready
-            this.readyEnd();
-            this.isReady = true;
-            merge(...this.tabbarList.map((i) => i.tapSubject)).subscribe(
-              (tabbar) => {
-                this.setIndex(tabbar.tabbarIndex);
-              },
-            );
-          }
-        });
-      });
+          });
+    }
+    if(isH5){
+      setTimeout(()=>run());
+    }else{
+      run();
+    }
+    
     // until tabbar mounted end.
     /**
      * uniapp child mounted < parent mounted;
