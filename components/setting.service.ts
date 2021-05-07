@@ -20,9 +20,9 @@ const advanceSetting = <T extends Object>(obj: T): T => {
 };
 
 export class Setting {
-  loadImg: string = "";
-  loadBlockImg: string = "";
-  imgLoadImg: string = "";
+  loadImg: string = "";  // voyo-load 加载图
+  loadBlockImg: string = ""; // voyo-load block模式加载图
+  imgLoadImg: string = "";  //voyo-img 加载图
   loginImg: string = "";
   errorImg: string = "";
   emptyImg: string = "";
