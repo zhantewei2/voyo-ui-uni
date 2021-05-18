@@ -4,6 +4,7 @@
     class="voyo-tab-bar-container"
     :scroll-with-animation="true"
   >
+    
     <movable-view
       class="voyo-tab-bar-area"
       direction="horizontal"

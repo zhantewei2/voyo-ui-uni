@@ -1,19 +1,21 @@
 {
   "name": "@voyo/ui-uni",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "components/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@voyo/http": "^2.2.0",
-    "@ztwx/utils": "^0.0.6"
+    "@ztwx/utils": "^1.4.0"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@voyo/core-style": "github:zhantewei2/voyo-core-style#master",
     "vue": "^2.6.11"
+  },
+  "peerDependencies": {
+    "@ztwx/utils": "^1.4.0"
   }
 }
