@@ -47,14 +47,14 @@ export default {
 <style lang="scss" scoped>
 @keyframes VoyoMarqueeAnimation {
   from {
-    transform: translate3d(50%, 0, 0);
+    transform: translate3d(10%, 0, 0);
   }
   to {
     transform: translate3d(-100%, 0, 0);
   }
 }
 .voyo-marquee-animation {
-  transform: translate3d(100%, 0, 0);
+  transform: translate3d(10%, 0, 0);
   display: inline-block;
   &.__run {
     animation-name: VoyoMarqueeAnimation;
