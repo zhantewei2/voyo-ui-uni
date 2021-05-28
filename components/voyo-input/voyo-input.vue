@@ -216,5 +216,4 @@
   :host {
     display: block;
   }
-  @import "./input.scss";
 </style>
