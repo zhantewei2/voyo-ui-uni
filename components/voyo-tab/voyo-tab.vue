@@ -10,6 +10,8 @@
       ]"
       :class="['abs-full', gentle ? 'voyo-bg-gentle' : '']"
       @scroll="onScroll"
+      :enhanced="true"
+      :bounces="iosBounces"
     >
       <!--      <view class="voyo-pagination-refresher"> </view>-->
       <view
@@ -53,6 +55,10 @@
       };
     },
     props: {
+      iosBounces:{
+        type:Boolean,
+        default :true
+      },
       isInner: {
         type: Boolean,
         default: true,
