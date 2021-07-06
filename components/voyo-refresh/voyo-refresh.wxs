@@ -186,6 +186,7 @@ var touchend=function(e,ins){
   */
   if(state.refreshState.refreshTriggering){
     refreshMethods.refreshRunStart(state,ins);
+    state.refreshState.refreshTriggering=false;
   }else {
     refreshMethods.refreshBack(state);
   }
