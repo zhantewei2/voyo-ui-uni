@@ -157,11 +157,8 @@ export default {
             });
           });
     }
-    if(isH5){
-      setTimeout(()=>run());
-    }else{
-      run();
-    }
+    setTimeout(()=>run());
+    
     
     // until tabbar mounted end.
     /**

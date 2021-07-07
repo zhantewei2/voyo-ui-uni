@@ -33,16 +33,20 @@ export default {
     this.tabbarIndex = null;
   },
   mounted() {
-    uni
-      .createSelectorQuery()
-      .in(this)
-      .select("#voyo-tabbar-item")
-      .boundingClientRect()
-      .exec(([res]) => {
-        this.width = res.width;
-        this.mountedSubject.next((this.mountedComplete = true));
-        this.mountedSubject.complete();
-      });
+    //小程序需要延迟才能正确获取rect
+    setTimeout(()=>{
+      uni
+          .createSelectorQuery()
+          .in(this)
+          .select("#voyo-tabbar-item")
+          .boundingClientRect()
+          .exec(([res]) => {
+            this.width = res.width;
+            this.mountedSubject.next((this.mountedComplete = true));
+            this.mountedSubject.complete();
+          });  
+    })
+    
   },
   methods: {
     tap() {

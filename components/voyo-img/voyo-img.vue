@@ -41,6 +41,7 @@
   import { ExcuteAfterConnected } from "../utils";
   import { setting } from "../setting.service";
   import { systemInfo,platform ,isH5} from "../utils/common";
+  import {isIOS} from "@ztwx/utils";
 
   export default {
     data() {
@@ -251,7 +252,7 @@
               this.calHeight(rect.width);
               if(this.lazyList&&this.lazyListAncestor)this.lazyListAncestor.descendantInitComplete();
             });
-        })
+        },isIOS&&!isH5?20:1); //小程序IOS 再延迟计算，不然，rect或为null。
       }
     },
     beforeDestroy() {
