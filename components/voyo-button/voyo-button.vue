@@ -119,7 +119,7 @@ export default {
       this.$emit("opensetting",e);
     },
     btnTap(e){
-      if(setting.btnBehaviorRecord)setting.btnBehaviorRecordSubject.next(this.behavior)
+      if(setting.btnBehaviorRecord&&this.behavior)setting.btnBehaviorRecordSubject.next(this.behavior)
       if(isH5){
         this.$emit("click",e);
         this.$emit("tap",e);
