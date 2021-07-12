@@ -1,5 +1,5 @@
 import { PaginationSetting } from "./voyo-pg/voyo-pg.lib";
-import {Subject} from "rxjs";
+import {Subject} from "./utils/Subject";
 declare let getApp: any;
 const app = getApp() || {};
 const VoyoSettingKey = "voyo-setting";
