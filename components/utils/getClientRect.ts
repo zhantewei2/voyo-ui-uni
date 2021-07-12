@@ -18,3 +18,12 @@ export const getClientRect=({component,querySelector,el}:GetClientRectParams):Pr
       return Promise.resolve(false);
     }
 };
+
+export interface ExecuteSelectorOpts{
+  retry?:number;
+  createSelector:()=>void;
+  exec:()=>void;
+}
+export const executeSelector=({retry=3,createSelector,exec}:ExecuteSelectorOpts)=>{
+  createSelector()
+}

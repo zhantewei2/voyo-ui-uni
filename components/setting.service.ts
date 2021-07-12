@@ -1,4 +1,5 @@
 import { PaginationSetting } from "./voyo-pg/voyo-pg.lib";
+import {Subject} from "rxjs";
 declare let getApp: any;
 const app = getApp() || {};
 const VoyoSettingKey = "voyo-setting";
@@ -20,6 +21,8 @@ const advanceSetting = <T extends Object>(obj: T): T => {
 };
 
 export class Setting {
+  btnBehaviorRecord: boolean; //开启按钮行为记录
+  btnBehaviorRecordSubject: Subject<any>=new Subject<any>();
   loadImg: string = "";  // voyo-load 加载图
   loadBlockImg: string = ""; // voyo-load block模式加载图
   imgLoadImg: string = "";  //voyo-img 加载图

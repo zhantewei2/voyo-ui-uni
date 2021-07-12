@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@ztwx/utils": "^1.4.0"
+    "@ztwx/utils": "^1.4.0",
+    "rxjs": "^6.6.7"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +17,7 @@
     "vue": "^2.6.11"
   },
   "peerDependencies": {
-    "@ztwx/utils": "^1.4.0"
+    "@ztwx/utils": "^1.4.0",
+    "rxjs": "^6.6.7"
   }
 }

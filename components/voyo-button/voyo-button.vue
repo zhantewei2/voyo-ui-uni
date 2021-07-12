@@ -46,6 +46,8 @@
 // export type BtnTypeVarious="appear"|"outline"|"pure"|"candy";
 import Vue from "vue";
 import {isH5} from "../utils";
+import {setting} from "../setting.service";
+
 export default {
   data(){
     return {
@@ -101,6 +103,9 @@ export default {
     "ripple":{
       type:Boolean,
       default:true
+    },
+    "behavior":{
+      type:String || Object,
     }
   },
   methods:{
@@ -114,6 +119,7 @@ export default {
       this.$emit("opensetting",e);
     },
     btnTap(e){
+      if(setting.btnBehaviorRecord)setting.btnBehaviorRecordSubject.next(this.behavior)
       if(isH5){
         this.$emit("click",e);
         this.$emit("tap",e);
