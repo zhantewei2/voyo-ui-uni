@@ -97,6 +97,7 @@ export default {
   methods: {
     setIsShow(v) {
       this.$emit("showChange", (this.isShow = v));
+      this.$emit("update:show",v);
     },
     clearHideTimeout() {
       clearTimeout(this.hideTimeout);
