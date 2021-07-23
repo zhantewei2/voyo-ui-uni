@@ -23,7 +23,12 @@
         <!--          class="za za-loading voyo-an-loading _textIcon voyo-color-des"-->
         <!--        ></text>-->
         <view class="_img-wrapper">
-          <image class="_img" :src="loadImg"></image>
+          <!--          #ifdef MP-WEIXIN-->
+          <image class="_img" :src="loadImg" />
+          <!--          #endif-->
+          <!--          #ifdef ENV-H5-->
+          <img class="_img" :src="loadImg" />
+          <!--          #endif-->
         </view>
         <view :class="[$slots.default?'_text':'']">
           <slot></slot>
