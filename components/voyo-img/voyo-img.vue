@@ -38,7 +38,7 @@
 </template>
 
 <script>
-  import { ExcuteAfterConnected } from "../utils";
+  import { ExcuteAfterConnected,querySelector } from "../utils";
   import { setting } from "../setting.service";
   import { systemInfo,platform ,isH5} from "../utils/common";
   import {isIOS} from "@ztwx/utils";
@@ -242,17 +242,16 @@
         })
       }
       if (!this.imgWidth && (this.aspect || this.autoHeight)) {
-        setTimeout(()=>{
-          uni
-            .createSelectorQuery()
-            .in(this)
-            .select("#img-container")
-            .boundingClientRect()
-            .exec(([rect]) => {
-              this.calHeight(rect.width);
-              if(this.lazyList&&this.lazyListAncestor)this.lazyListAncestor.descendantInitComplete();
-            });
-        },isIOS&&!isH5?20:1); //小程序IOS 再延迟计算，不然，rect或为null。
+        querySelector(
+            ()=>this.createSelectorQuery()
+                .in(this)
+                .select("#img-container")
+                .boundingClientRect(),
+            ([rect])=>rect&&rect.width,
+        ).then(([rect]) => {
+          this.calHeight(rect.width);
+          if(this.lazyList&&this.lazyListAncestor)this.lazyListAncestor.descendantInitComplete();
+        })
       }
     },
     beforeDestroy() {
