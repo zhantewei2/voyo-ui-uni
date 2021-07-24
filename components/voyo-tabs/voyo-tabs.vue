@@ -1,294 +1,130 @@
 <template>
-  <view>
-    <scroll-view
-        v-if="initContent"
-        id="scrollView"
-        ref="scrollView"
-        :scroll-y="canScrollAll"
-        :style="[
-        height0 ? { height: height0 + 'px' } : null,
-        showContent ? { display: 'block' } : { display: 'none' },
+  <view
+      :style="[
+        height?{
+          position:'relative',
+          height:height+'px'
+        }:null
       ]"
-        :class="['abs-full', gentle ? 'voyo-bg-gentle' : '']"
-        @scroll="onScroll"
-        :enhanced="true"
-        :bounces="iosBounces"
-    >
-      <!--      <view class="voyo-pagination-refresher"> </view>-->
-      <view
-          class="voyo-pagination-content"
-          data-voyo-type="voyo-tab-slot-wrapper"
-          v-if="(cache === 'instance' && showContent) || cache !== 'instance'"
-      >
-        <slot></slot>
-      </view>
-    </scroll-view>
+  >
+    <view v-if="compatibilityFlex1" class="abs-full">
+      <slot></slot>
+    </view>
+    <block else>
+      <slot></slot>
+    </block>
   </view>
 </template>
 <script>
-import {merge, Observable, of, Subject,timer,interval} from "rxjs";
-import {ExcuteAfterConnected} from "../utils";
-import {debounceTime, map, mergeMap,debounce,retry} from "rxjs/operators";
-
+import { ExcuteAfterConnected } from "../utils/excuteAfterConnected";
+import { Subject, merge } from "rxjs";
+import { isH5 } from "../utils";
 export default {
-  /**
-   *
-   * scrollSubject :Subject<{event:Event,tab:this}>
-   * tabIndex
-   * canScroll
-   */
-  data() {
-    return {
-      componentName: "voyo-tab",
-      height0: 0,
-      tabActive: false, //inner tab active,
-      tabInit: false,
-      canScroll: true,
-      canScrollByOther: true,
-      upperThreshold: 0,
-      lowerThreshold: 60,
-      refresherTriggered: false,
-      refreshing: false,
-      retryEnabled: false,
-      usePagination: true, //tmp true
-      isScrollUpperBound: true,
-      innerUpperBehavior: false,
-    };
-  },
   props: {
-    iosBounces:{
-      type:Boolean,
-      default :true
-    },
-    isInner: {
-      type: Boolean,
-      default: true,
-    },
     height: {
       type: Number,
     },
-    initLoad: {
-      type: Boolean,
-      default: true,
+    index: {
+      type: Number,
+      default: 0,
     },
-    gentle: {
-      type: Boolean,
-      default: false,
-    },
-    refresh: {
+    immediateIndex: {
       type: Boolean,
       default: false,
     },
-    cache: {
-      type: String, // 'dom'|'instance'
-      default: "dom",
-    },
+    compatibilityFlex1:{
+      type: Boolean,
+      default:false
+    }
   },
-  computed: {
-    showContent() {
-      return (this.isInner && this.tabActive) || !this.isInner;
-    },
-    initContent() {
-      return (this.isInner && this.tabInit) || !this.isInner;
-    },
-    canScrollAll() {
-      return !this.refreshing && this.canScroll && this.canScrollByOther;
-    },
-    refresherEnabled() {
-      return (
-          this.refreshing ||
-          (this.refresh && this.canScroll && this.canScrollByOther)
-      );
-    },
+  data() {
+    return {
+      componentName: "voyo-tabs",
+    };
   },
   watch: {
-    height: {
-      immediate: true,
+    index: {
+      // immediate: true,
       handler(v) {
-        this.setHeight(v);
+        this.selectActiveTab(v);
       },
     },
-    initContent:{
-      immediate:true,
-      handler(v) {
-        v && this.contentExcute.connect();
-      }},
   },
+  /**
+   * scrollSubject: Subject< {top:number,height:number,index:number} >
+   * excuteAfterConnected : ExcuteAfterConnected
+   * activeIndex: number;
+   * preActiveTab : VoyoTabComponent;
+   * tabList:  VoyoTabComponent[];
+   * tabStatList : Array<{tabIndex,top:number,tab:VoyoTabComponent}>
+   */
   beforeCreate() {
+    this.excuteAfterConnected = new ExcuteAfterConnected();
     this.scrollSubject = new Subject();
-    this.scrollAreaHeight = null;
-    this.scrollTop = null;
-    this.scrollHeight = null;
-    this.contentExcute = new ExcuteAfterConnected();
-
-    let nodeRefsScrollOffset = uni
-        .createSelectorQuery()
-        .in(this)
-        .select("#scrollView")
-        .scrollOffset();
-    this.scrollEvent=new Subject();
-    let scrollH5Container;
-
-    this.sub = merge(
-        of({
-          detail:{scrollTop:0}
-        }),
-        this.scrollSubject,
-        this.scrollSubject.pipe(
-            debounceTime(150),
-            mergeMap(
-                () =>
-                    new Observable((ob) => {
-                      // #ifdef MP-WEIXIN
-                      nodeRefsScrollOffset.exec(([r]) => {
-                        ob.next({ type: "scroll", detail: r });
-                        ob.complete();
-                      });
-                      // #endif
-
-                      // #ifdef ENV-H5
-                      if(!scrollH5Container){
-                        const scrollViewEl=this.$refs.scrollView.$el;
-                        scrollH5Container=scrollViewEl.querySelector(".uni-scroll-view>.uni-scroll-view");
-                      }
-                      ob.next({
-                        type:"scroll",
-                        detail:{
-                          scrollTop: scrollH5Container.scrollTop,
-                          scrollHeight: scrollH5Container.scrollHeight
-                        }
-                      })
-                      ob.complete();
-                      // #endif
-                    }),
-            ),
-        ),
-    ).pipe(
-        map((event) => ({
-          tab: this,
-          event,
-        })),
-    ).subscribe(i=>this.scrollEvent.next(i))
+    this.tabStatList = [];
   },
   mounted() {
-    let detail;
-    let isBottom = false;
-    let bottomHeight;
-    let bottomMinHeight;
-    this.touchStartY = 0;
-    this.scrollEvent.subscribe(async ({ event }) => {
-      if (!this.usePagination||!event||!event.detail) return;
-      detail=event.detail;
-      if(!detail.scrollHeight)return;
-      const viewHeight = await this.getViewHeight();
-      bottomHeight = detail.scrollHeight - detail.scrollTop;
-      bottomMinHeight = viewHeight + this.lowerThreshold;
-      //scrolltolower
-      if (bottomHeight <= bottomMinHeight && !isBottom) {
-        isBottom = true;
-        this.$emit("scrolltolower", true);
-      } else if (bottomHeight > bottomMinHeight && isBottom) {
-        isBottom = false;
+    let tabIndex = 0;
+    this.tabList = (
+        isH5?
+            this.$slots.default.map(i=>i.componentInstance):
+            this.$children
+    ).filter((componentInstance) => {
+      if (componentInstance.$data.componentName === "voyo-tab") {
+        componentInstance.tabIndex = tabIndex;
+        this.tabStatList.push({ tabIndex, top: 0, tab: componentInstance });
+        tabIndex++;
+        return true;
       }
     });
+    this.listenTabsScroll();
+    this.excuteAfterConnected.connect();
+    if (this.immediateIndex) this.selectActiveTab(this.index);
   },
   methods: {
-    getScrollTop() {
-      return this.scrollTop;
+    listenTabsScroll() {
+      let index;
+      let top;
+      let height;
+      merge(...this.tabList.map((tab) => tab.scrollEvent)).subscribe(
+          ({ event, tab }) => {
+            index = tab.tabIndex;
+            if(!event.detail)return;
+            top = event.detail.scrollTop;
+            height = event.detail.scrollHeight;
+            this.tabStatList[0].top = top;
+            this.scrollSubject.next({ index, top, height });
+          },
+      );
     },
-    touchstart(e) {
-      if (!this.canScroll) return;
-      this.touchStartY = e.pageY;
-    },
-    touchmove(e) {
-      if (!this.canScroll) return;
-      if (this.touchStartY - e.pageY > 30) this.innerUpperBehavior = true;
-    },
-    touchend(e) {
-      this.innerUpperBehavior = false;
-    },
-    scrollIsEnd() {},
-    onScroll(e) {
-      if (this.innerUpperBehavior) {
-        e.stopPropagation();
-      }
-      this.scrollSubject.next(e);
-    },
-    reCalViewHeight(){
-      this.scrollAreaHeight=0;
-    },
-    getViewHeight() {
-      return new Promise((resolve, reject) => {
-        if (this.scrollAreaHeight) return resolve(this.scrollAreaHeight);
-        this.contentExcute.execute(() => {
-          this.createSelectorQuery()
-              .in(this)
-              .select(" #scrollView")
-              .boundingClientRect()
-              .exec(([rect]) => {
-                resolve((this.scrollAreaHeight = Math.floor(rect.height)));
-              });
-        });
+    selectActiveTab(index) {
+      this.excuteAfterConnected.execute(() => {
+        if (index === this.activeIndex) return;
+        this.activeIndex = index;
+        const nextTab = this.tabList[index];
+        if (this.preActiveTab) this.preActiveTab.clearActive();
+        nextTab.toActive(
+            this.tabStatList &&
+            this.tabStatList[index] &&
+            this.tabStatList[index].top,
+        );
+        this.preActiveTab = nextTab;
       });
     },
-    setHeight(h) {
-      if (h === this.height0) return;
-      this.height0 = h;
-    },
-    clearActive() {
-      this.tabHide();
-      this.tabActive = false;
-    },
-    toActive() {
-      this.tabShow();
-      this.tabInit = this.tabActive = true;
-    },
-    tabHide() {
-      this.$emit("hide", true);
-      //view scroll 在隐藏后，refresherEnable 置为true 时，会不生效。
-      // 所以 所有隐藏前均置为true
-      this.retryEnabled = true;
-    },
-    tabShow() {
-      this.retryEnabled = false;
-      this.$emit("show", true);
-    },
-    viewScroll(event) {
-      // this.scrollTop = event.detail.scrollTop;
-      // this.scrollHeight = event.detail.scrollHeight;
-      // this.$emit("scroll", event);
+    mountedPromise() {
+      return new Promise((resolve, reject) => {
+        this.excuteAfterConnected.execute(() => resolve());
+      });
     },
     disableScroll() {
-      if (!this.canScroll) return;
-      this.canScroll = false;
-    },
-    enableScroll() {
-      if (this.canScroll) return;
-      this.canScroll = true;
-    },
-    disableScrollUnOfficial() {
-      if (!this.canScrollByOther) return;
-      this.canScrollByOther = false;
-    },
-    enableScrollUnOfficial() {
-      if (this.canScrollByOther) return;
-      this.canScrollByOther = true;
-    },
-    scrollToUpper() {
-      this.$emit("scrolltoupper", true);
-    },
-    refresherrefresh() {
-      if (this.refreshing) return;
-      this.refresherTriggered = this.refreshing = true;
-      this.$emit("refresherTriggered", () => {
-        this.refresherTriggered = false;
+      this.excuteAfterConnected.execute(() => {
+        this.tabList.forEach((tab) => tab.disableScroll());
       });
     },
-    refresherpulling(e) {
-      this.refresherTriggered = true;
-    },
-    refresherrestore(e) {
-      this.refresherTriggered = this.refreshing = false;
+    enableScroll() {
+      this.excuteAfterConnected.execute(() => {
+        this.tabList.forEach((tab) => tab.enableScroll());
+      });
     },
   },
 };
