@@ -52,7 +52,7 @@ const findChildrenFromList=(instance:Vue,name:string):Vue|undefined=>{
   }else{
     if(!instance.$slots.default)return;
     for(let vNode of instance.$slots.default){
-      if(findComponent(vNode.componentInstance,name))return vNode.componentInstance;
+      if(findComponent(vNode.componentInstance as Vue,name))return vNode.componentInstance;
     }
   }
 };

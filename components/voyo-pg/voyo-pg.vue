@@ -28,7 +28,8 @@
     <voyo-empty @tap="init" v-if="!bindListLength&&isEmpty">{{ emptyHint }}</voyo-empty>
   </view>
 </template>
-<script lang="ts">
+<script>
+  import Vue from "vue";
   import { isTabParent } from "../utils/findComponent";
   import { PaginationParams } from "./voyo-pg.lib";
   import { setting } from "../setting.service";
@@ -66,13 +67,14 @@
         type: String,
         default: "暂无数据",
       },
-      info: undefined,
+      info: {},
       settingType:{
         type:String,
         default:"default"
       },
       pageSize:{
-        type:Number
+        type:Number,
+        default:0
       }
     },
     data() {
@@ -112,7 +114,7 @@
       this.tab = null;
       this.currentSetting=null;
     },
-    created(): void {
+    created() {
       /**
        * vue 在@component 下，可以传递箭头函数。
        * 而 default object下，只能传递function,function丢失this
@@ -124,10 +126,10 @@
         this.paginationFn = paginationFn;
       });
     },
-    mounted(this: any) {
+    mounted() {
       if (!this.paginationFn) throw Error("voyo-pg: must call getPaginationFn");
 
-      let tab: any =  this.$parent;
+      let tab =  this.$parent;
       if (!(tab=isTabParent(tab)))
         throw new Error("voyo-pagination must be child of tab component");
       this.tab=tab;
@@ -148,8 +150,8 @@
       this.init();
     },
     methods: {
-      refresh(): Promise<any> {
-        const params: PaginationParams = {
+      refresh() {
+        const params = {
           currentPage: 1,
           behavior: "refresh",
           info: this.info,
@@ -175,7 +177,7 @@
        * @res
        * @return
        * **/
-      handleResult(params: PaginationParams, res: any): Boolean {
+      handleResult(params, res) {
         if (this.currentSetting.isEmpty(params, res)) {
           this.setEmpty();
           this.refreshSuccess();
@@ -206,7 +208,7 @@
 
         }
       },
-      init(): Promise<any> {
+      init(){
         return this.pullInit().then((success) => {
           if (!success || this.downNoMore) return;
           // return this.initAutoPullDown();
@@ -216,17 +218,17 @@
        * auto pullDown after init completed;
        * if content height lower than viewHeight+initPullDownThreshold .
        */
-      initAutoPullDown(): Promise<any> {
+      initAutoPullDown() {
         return Promise.all([
           this.tab.getViewHeight(),
           this.getPaginationContentHeight(),
-        ]).then((res: number[]) => {
+        ]).then((res) => {
           if (Math.ceil(res[0]) - res[1] > 0 - this.initPullDownThreshold) {
             return this.pullDown();
           }
         });
       },
-      pullInit(): Promise<any> {
+      pullInit(){
         if (this.initLoading) return Promise.resolve(false);
         this.initLoad();
         const params = {
@@ -250,7 +252,7 @@
             this.tab.enableScrollUnOfficial();
           });
       },
-      pullDown(): Promise<any> {
+      pullDown() {
         if (this.isEnd || this.downLoading || !this.initEnd || this.downNoMore)
           return;
         this.downLoad();
@@ -340,7 +342,7 @@
         this.$emit("downErrorTap", true);
       },
     },
-  };
+  }
 </script>
 
 

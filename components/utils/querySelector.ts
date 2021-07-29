@@ -17,7 +17,7 @@ export const querySelector = (
   let retryCurrentCount = 0;
   return new Promise((resolve, reject) => {
     new Observable((ob) => {
-      queryFn().exec((result) => {
+      queryFn().exec((result:any) => {
         retryCurrentCount++ < retryCount && judgeErrorFn(result)
           ? ob.error("Judgement Failure")
           : ob.next(result);

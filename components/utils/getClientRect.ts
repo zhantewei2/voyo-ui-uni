@@ -12,7 +12,7 @@ export const getClientRect=({component,querySelector,el}:GetClientRectParams):Pr
       return Promise.resolve(el.getBoundingClientRect());
     }else if(!window&&component&&querySelector){
       return new Promise<any>((resolve,reject)=>{
-        component.createSelectorQuery().select(querySelector).boundingClientRect().exec((res)=>resolve(res[0]))
+        component.createSelectorQuery().select(querySelector).boundingClientRect().exec((res:any)=>resolve(res[0]))
       })
     }else{
       return Promise.resolve(false);

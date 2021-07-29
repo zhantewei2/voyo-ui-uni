@@ -80,11 +80,11 @@ export default {
   watch: {
     show: {
       immediate: true,
-      handler(v: boolean) {
+      handler(this:any,v: boolean) {
         v ? this.contentShow() : this.contentHide();
       },
     },
-    value(v: string) {
+    value(this:any,v: string) {
       this.value0 = v;
     },
   },
@@ -100,12 +100,12 @@ export default {
       displayContent: false,
     };
   },
-  beforeCreate() {
+  beforeCreate(this:any) {
     this.contentHideTimeout = null;
     this.value0 = "";
   },
   methods: {
-    contentShow() {
+    contentShow(this:any) {
       if (this.showContent) return;
       if (this.contentHideTimeout) {
         clearTimeout(this.contentHideTimeout);
@@ -115,7 +115,7 @@ export default {
       this.displayContent = true;
       this.$emit("showChange", true);
     },
-    contentHide() {
+    contentHide(this:any) {
       if (!this.showContent) return;
       this.showContent = false;
       this.contentHideTimeout = setTimeout(() => {
@@ -123,14 +123,14 @@ export default {
       }, 300);
       this.$emit("showChange", false);
     },
-    keyTap(i: KeyItem) {
+    keyTap(this:any,i: KeyItem) {
       this.$emit("keyPress", i.value);
       this.handleValue(i.value);
     },
-    confirmTap() {
+    confirmTap(this:any) {
       this.$emit("keyPress", 13);
     },
-    handleValue(key: string) {
+    handleValue(this:any,key: string) {
       let value: string = this.value0 ? this.value0 : "";
       value=value.toString();
       if (key === "del") {
@@ -140,10 +140,10 @@ export default {
       }
       this.$emit("valueChange", value);
     },
-    keyboardTap(e) {
+    keyboardTap(this:any,e:any) {
       e.voyoKeyboardTap = true;
     },
-    closeBarTap() {
+    closeBarTap(this:any) {
       this.contentHide();
     },
   },

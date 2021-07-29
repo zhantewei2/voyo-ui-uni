@@ -21,7 +21,7 @@ const advanceSetting = <T extends Object>(obj: T): T => {
 };
 
 export class Setting {
-  btnBehaviorRecord: boolean; //开启按钮行为记录
+  btnBehaviorRecord?: boolean; //开启按钮行为记录
   btnBehaviorRecordSubject: Subject<any>=new Subject<any>();
   loadImg: string = "";  // voyo-load 加载图
   loadBlockImg: string = ""; // voyo-load block模式加载图
