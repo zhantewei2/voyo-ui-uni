@@ -65,29 +65,45 @@ export default {
     this.outTimeout = null;
   },
   methods: {
+
+    clearAnTimeout(){
+      if(this.anTimeout){
+        clearTimeout(this.anTimeout);
+        this.anTimeout=null;
+      }
+      this.anCloseRunning=false;
+    },
+    clearTimeout(){
+      if(this.outTimeout){
+        clearTimeout(this.outTimeout);
+        this.outTimeout=null;
+      }
+    },
     open() {
-      this.checkTimeout();
+      console.log("--open")
+      this.clearTimeout();
+      this.clearAnTimeout();
+
       this.show = this.showAn = true;
       if (this.autoClose) {
-        setTimeout(() => {
+        this.outTimeout=setTimeout(() => {
+          this.outTimeout=null;
           this.close();
         }, this.autoCloseTime);
       }
     },
     close() {
+      this.clearTimeout();
       this.showAn = false;
-      if (this.checkTimeout(false)) return;
+      if(this.anCloseRunning)return;
       this.$emit("input", false);
-      this.outTimeout = setTimeout(() => {
-        this.outTimeout = null;
+
+      this.anCloseRunning=true;
+      this.anTimeout = setTimeout(() => {
+        this.anCloseRunning=false;
+        this.anTimeout=null;
         this.show = false;
       }, 300);
-    },
-    checkTimeout(prevent = true) {
-      if (this.outTimeout) {
-        if (prevent) clearTimeout(this.outTimeout);
-        return true;
-      }
     },
   },
 };
