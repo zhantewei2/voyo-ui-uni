@@ -2,7 +2,6 @@
   <view
       @tap="imgTap"
       id="img-container"
-      ref="imgContainer"
       :class="[
       'voyo-img-container',
       allClass,
@@ -243,7 +242,7 @@
       }
       if (!this.imgWidth && (this.aspect || this.autoHeight)) {
         querySelector(
-            ()=>this.createSelectorQuery()
+            ()=>uni.createSelectorQuery()
                 .in(this)
                 .select("#img-container")
                 .boundingClientRect(),

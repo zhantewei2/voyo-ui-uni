@@ -80,7 +80,6 @@ export default {
       }
     },
     open() {
-      console.log("--open")
       this.clearTimeout();
       this.clearAnTimeout();
 
