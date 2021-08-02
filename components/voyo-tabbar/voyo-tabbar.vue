@@ -11,7 +11,7 @@
 </template>
 <script>
 import { Subject } from "rxjs";
-
+import {querySelector} from "../utils/querySelector";
 export default {
   data() {
     return {
@@ -35,12 +35,10 @@ export default {
   mounted() {
     //小程序需要延迟才能正确获取rect
     setTimeout(()=>{
-      uni
-          .createSelectorQuery()
-          .in(this)
-          .select("#voyo-tabbar-item")
-          .boundingClientRect()
-          .exec(([res]) => {
+      querySelector(
+          ()=>uni.createSelectorQuery().in(this).select("#voyo-tabbar-item").boundingClientRect(),
+          ([rect])=>rect&&rect.width
+      ).then(([res]) => {
             this.width = res.width;
             this.mountedSubject.next((this.mountedComplete = true));
             this.mountedSubject.complete();
