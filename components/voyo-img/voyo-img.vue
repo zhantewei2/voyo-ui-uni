@@ -2,6 +2,7 @@
   <view
       @tap="imgTap"
       id="img-container"
+      ref="imgContainer"
       :class="[
       'voyo-img-container',
       allClass,
