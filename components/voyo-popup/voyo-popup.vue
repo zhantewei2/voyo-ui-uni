@@ -1,33 +1,33 @@
 <template>
   <view>
     <view
-      v-if="isShow"
-      class="voyo-popup-slide"
-      :class="[
+        v-if="isShow"
+        class="voyo-popup-slide"
+        :class="[
         isShow && !leaving ? '__animate-' + type + '-enter' : '',
         leaving ? '__animate-' + type + '-leave' : '',
       ]"
     >
       <view @tap="tapBg" class="_layout-bg"></view>
       <view
-        :class="[
+          :class="[
           'voyo-popup-slide-view',
           '__style-' + type,
           appear ? '__appear' : '',
           appear ? '__appear-' + type : '',
           useCloseBtn ? '__width-close-icon' : '',
         ]"
-        :style="{
+          :style="{
           width:width
         }"
       >
         <voyo-button-icon
-          color="primary"
-          type="candy"
-          size="mini"
-          class="_close-icon"
-          @tap="closeTap"
-          v-if="useCloseBtn"
+            color="primary"
+            type="candy"
+            size="mini"
+            class="_close-icon"
+            @tap="closeTap"
+            v-if="useCloseBtn"
         >
           <text :class="[closeIconClassName]"></text>
         </voyo-button-icon>
@@ -105,8 +105,9 @@ export default {
       this.hideTimeout = null;
     },
     setHideTimeout() {
+      this.setIsShow(false);
       this.hideTimeout = setTimeout(() => {
-        this.setIsShow((this.leaving = false));
+        this.leaving=false;
       }, 300);
     },
     toShow() {

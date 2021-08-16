@@ -1,6 +1,6 @@
 {
   "name": "@voyo/ui-uni",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0",
   "description": "",
   "main": "components/index.ts",
   "scripts": {
