@@ -1,0 +1,5 @@
+[development]
+IOS>= 12
+[production]
+chrome 40
+IOS >= 9
