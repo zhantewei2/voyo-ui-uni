@@ -42,8 +42,8 @@ import { querySelector } from "../utils";
 export default {
   props: {
     aspectRatio: {
-      type: Boolean,
-      default: false, // height/width
+      type: Number,
+      default: 0, // height/width
     },
     width: {
       type: String,
@@ -65,6 +65,10 @@ export default {
     bgGentle: {
       type: Boolean,
       default: true,
+    },
+    lazyDelayShow: {
+      type: Number,
+      default: 150,
     },
   },
   watch: {},
@@ -101,6 +105,12 @@ export default {
       this.loadError = true;
       this.loading = false;
     },
+    clearDelay(){
+      if(this.delayTimeout){
+        clearTimeout(this.delayTimeout);
+        this.delayTimeout=null;
+      }
+    }
   },
   async mounted() {
     if (this.aspectRatio) {
@@ -111,12 +121,17 @@ export default {
     }
 
     this.loading = true;
-    if (this.intersectionRatio != null) {
+    if (this.intersectionRatio != null&&this.createIntersectionObserver) {
+      
       this.observe = this.createIntersectionObserver({});
       this.observe.relativeToViewport();
       this.observe.observe(".voyo-image-simple", (e) => {
+        this.clearDelay();
         if (e.intersectionRatio > 0) {
-          this.lazyShow = this.lazyOnce = true;
+          this.delayTimeout=setTimeout(()=>{
+            this.lazyShow = this.lazyOnce = true;
+            this.delayTimeout=null;
+          },this.lazyDelayShow);
         } else {
           this.lazyShow = false;
         }
@@ -127,6 +142,7 @@ export default {
   },
   beforeDestroy() {
     this.observe && this.observe.disconnect();
+    this.clearDelay();
   },
 };
 </script>

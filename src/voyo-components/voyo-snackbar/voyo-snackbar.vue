@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { setting } from "@voyo/ui-uni/components/setting.service";
+import { setting } from "../setting.service";
 
 export default {
   props: {
