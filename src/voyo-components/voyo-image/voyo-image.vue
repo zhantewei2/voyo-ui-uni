@@ -1,36 +1,36 @@
 <template>
   <view
-    :style="{
+      :style="{
       width: width,
       height: height,
     }"
-    class="voyo-image-simple"
-    id="wrapper"
-    :class="{
+      class="voyo-image-simple"
+      id="wrapper"
+      :class="{
       __gentle: bgGentle,
     }"
   >
     <image
-      v-if="loading"
-      :src="loadImg"
-      class="voyo-img-loading abs-center"
+        v-if="loading"
+        :src="loadImg"
+        class="voyo-img-loading abs-center"
     ></image>
     <image
-      :mode="mode"
-      v-if="!loadError && lazyOnce"
-      :class="{
+        :mode="mode"
+        v-if="!loadError && lazyOnce"
+        :class="{
         '_img-loading': !lazyShow || !loadSuccess,
       }"
-      class="voyo-an-fade0 abs-full"
-      @load="success"
-      @error="error"
-      :src="src"
+        class="voyo-an-fadeIn0 abs-full"
+        @load="success"
+        @error="error"
+        :src="src"
     ></image>
     <image
-      class="voyo-img-loading abs-center"
-      v-if="loadError"
-      :src="loadErrImg"
-      mode="aspectFit"
+        class="voyo-img-loading abs-center"
+        v-if="loadError"
+        :src="loadErrImg"
+        mode="aspectFit"
     ></image>
   </view>
 </template>
@@ -47,7 +47,7 @@ export default {
     },
     width: {
       type: String,
-      default: "100%", 
+      default: "100%",
     },
     intersectionRatio: {
       type: Number,
@@ -70,7 +70,11 @@ export default {
       type: Number,
       default: 150,
     },
-    relativeViewport:{}
+    performance:{
+      type: Boolean,
+      default: true
+    },
+    relativeViewport:{},
   },
   watch: {},
   data() {
@@ -89,13 +93,13 @@ export default {
     //calculate height
     getWidth() {
       return querySelector(
-        () =>
-          uni
-            .createSelectorQuery()
-            .in(this)
-            .select(".voyo-image-simple")
-            .boundingClientRect(),
-        ([rect]) => rect && rect.width,
+          () =>
+              uni
+                  .createSelectorQuery()
+                  .in(this)
+                  .select(".voyo-image-simple")
+                  .boundingClientRect(),
+          ([rect]) => rect && rect.width,
       ).then(([rect]) => rect.width);
     },
     success() {
@@ -123,17 +127,23 @@ export default {
 
     this.loading = true;
     if (this.intersectionRatio != null&&this.createIntersectionObserver) {
-      
+
       this.observe = this.createIntersectionObserver({});
       if(this.relativeViewport)this.observe.relativeToViewport(this.relativeViewport);
+      this.observe.relativeToViewport();
       this.observe.observe(".voyo-image-simple", (e) => {
         this.clearDelay();
         if (e.intersectionRatio > 0) {
           this.delayTimeout=setTimeout(()=>{
             this.lazyShow = this.lazyOnce = true;
             this.delayTimeout=null;
+            if(!this.performance){
+              this.observe.disconnect();
+              this.observe=null;
+            }
           },this.lazyDelayShow);
-        } else {
+
+        }else{
           this.lazyShow = false;
         }
       });
