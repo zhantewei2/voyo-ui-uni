@@ -70,6 +70,7 @@ export default {
       type: Number,
       default: 150,
     },
+    relativeViewport:{}
   },
   watch: {},
   data() {
@@ -124,7 +125,7 @@ export default {
     if (this.intersectionRatio != null&&this.createIntersectionObserver) {
       
       this.observe = this.createIntersectionObserver({});
-      this.observe.relativeToViewport();
+      if(this.relativeViewport)this.observe.relativeToViewport(this.relativeViewport);
       this.observe.observe(".voyo-image-simple", (e) => {
         this.clearDelay();
         if (e.intersectionRatio > 0) {
