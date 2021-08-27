@@ -1,0 +1,209 @@
+var bezierTwice = function (x0, x1, x2) {
+  return function (t) {
+    return (1 - t) * (1 - t) * x0 + 2 * t * (1 - t) * x1 + t * t * x2;
+  };
+};
+
+var initChange=function(newVal,oldVal,ins){
+  var state=ins.getState();
+  if(newVal){
+    state.wrapperEl=ins.selectComponent(".voyo-refresh-wrapper");
+    state.contentEl=ins.selectComponent(".voyo-refresh-content");
+    state.wrapperElRestoring=false;
+    state.refreshing=false;
+    state.canRefresh=true;
+    state.minY=0;
+    state.maxY=80;
+    state.triggerY=80;
+    state.startY=0;
+    state._distanceY=0;
+    state.originDistanceY=0;
+    state.animateStrak=bezierTwice(0,65,80);
+    state.radioY=0;
+    state.realY=0;
+    state.refreshState={
+      refreshSuccess:false,
+      refreshBacking:false,
+      refreshRunning:false,
+      refreshTriggering:false,
+      keys:["item","trigger","running","success"],
+      item:{
+        show:false,
+        el:ins.selectComponent("#refreshItem")
+      },
+      trigger:{
+        show:false,
+        el:ins.selectComponent("#refreshTriggerItem")
+      },
+      running:{
+        show:false,
+        el:ins.selectComponent("#refreshRunningItem")
+      },
+      success:{
+        show:false,
+        el:ins.selectComponent("#refreshSuccessItem")
+      }
+    }
+
+  }
+};
+
+var refreshMethods={
+  refreshForward:function(state){
+    refreshMethods.toggleShow(state,"item",true);
+    state.contentEl.setStyle({
+      transform:"scale("+state.radioY+")"
+    });
+  },
+  toggleShow:function(state,name,value){
+    var itemRef=state.refreshState[name];
+    if(itemRef.show===value)return;
+    value?itemRef.el.setStyle({display:"flex"}):itemRef.el.setStyle({display:"none"});
+    itemRef.show=value;
+  },
+  toggleShowAll:function(state,value){
+    state.refreshState.keys.forEach(function(key){
+      refreshMethods.toggleShow(state,key,value);
+    });
+  },
+  refreshBackEnd:function(state){
+    if(state.refreshState.refreshSuccess){
+      state.refreshState.refreshSuccess=false;
+    }
+    state.refreshState.refreshBacking=false;
+    refreshMethods.toggleShowAll(state,false);
+
+    if(state.wrapperElRestoring){
+      state.wrapperEl.removeClass("voyo-refresh-wrapper-refresh-restore");
+      state.contentEl.removeClass("voyo-refresh-content-refresh-restore");
+      state.wrapperEl.setStyle({});
+      state.contentEl.setStyle({});
+    }
+    state.originDistanceY=0;
+    state.wrapperElRestoring=false;
+  },
+  refreshBack:function(state){
+    if(state.radioY===0){
+      refreshMethods.refreshBackEnd(state);
+    }else{
+      state.refreshState.refreshBacking=true;
+      state.wrapperElRestoring=true;
+      state.wrapperEl.addClass("voyo-refresh-wrapper-refresh-restore");
+      state.contentEl.addClass("voyo-refresh-content-refresh-restore");
+    }
+  },
+  refreshTrigger:function(state){
+    state.refreshState.refreshTriggering=true;
+    refreshMethods.toggleShow(state,"item",false);
+    refreshMethods.toggleShow(state,"trigger",true);
+  },
+  refreshTriggerCancel:function(state){
+    state.refreshState.refreshTriggering=false;
+    refreshMethods.toggleShow(state,"item",true);
+    refreshMethods.toggleShow(state,"trigger",false);
+  },
+  refreshRunStart:function(state,ins){
+    state.refreshState.refreshRunning=true
+    refreshMethods.toggleShow(state,"item",false);
+    refreshMethods.toggleShow(state,"running",true);
+    refreshMethods.toggleShow(state,"trigger",false);
+    ins.callMethod("refreshStart");
+  },
+  refreshRunComplete:function(newVal,oldVal,ins){
+    if(!newVal)return;
+    var state=ins.getState();
+    state.refreshState.refreshRunning=false;
+    refreshMethods.toggleShow(state,"running",false);
+    refreshMethods.toggleShow(state,"success",true);
+    refreshMethods.refreshBack(state);
+  },
+};
+
+var roundValue=function(v){
+  return Math.round(v*100)/100;
+}
+
+var canRefreshChange=function(newVal,oldVal,ins){
+  var state=ins.getState();
+  state.canRefresh=newVal;
+}
+
+var startRefreshMove=function(state){
+  state.wrapperEl.addClass("not-touch");
+}
+
+var cancelRefreshMove=function(state){
+  state.wrapperEl.removeClass("not-touch");
+}
+
+var touchstart=function(e,ins){
+  /**
+   * 是否refresh 不由refresh 控制，而来自于父组件控制。
+   * 这与web 组件行为不一致。
+   */
+  var state=ins.getState();
+  if(!state.canRefresh || state.refreshState.refreshBacking || state.refreshState.refreshRunning)return;
+
+  var touchEvent=e.touches[0];
+  startRefreshMove(state);
+  state.startY=roundValue(touchEvent.pageY);
+}
+
+var touchmove=function(e,ins){
+  var state=ins.getState();
+  if(!state.canRefresh || state.refreshState.refreshBacking || state.refreshState.refreshRunning)return;
+
+  var touchEvent=e.touches[0];
+  var distanceY=(touchEvent.pageY-state.startY+state.originDistanceY)/2; //path in half
+  if(distanceY<state.minY){
+    distanceY=state.minY;
+  }else if(distanceY>state.maxY){
+    distanceY=state.maxY;
+  }
+  if(distanceY!==state._distanceY){
+    state._distanceY=distanceY;
+    state.radioY=state._distanceY/state.maxY;
+    state.realY=roundValue(state.animateStrak(state.radioY));
+    state.wrapperEl.setStyle({
+      transform:"translate3d(0,"+state.realY+"px,0)"
+    });
+    refreshMethods.refreshForward(state);
+    if(state.realY===state.maxY&&!state.refreshState.refreshTriggering){
+       refreshMethods.refreshTrigger(state);
+    }else if(state.realY!==state.maxY&&state.refreshState.refreshTriggering){
+      refreshMethods.refreshTriggerCancel(state);
+    }
+  }
+};
+
+var touchend=function(e,ins){
+  var state=ins.getState();
+  cancelRefreshMove(state);
+  state.originDistanceY=state._distanceY;
+  if(state.refreshState.refreshBacking || state.refreshState.refreshRunning)return;
+  /**when refresh trigger
+  *  execute refreshRun
+  */
+  if(state.refreshState.refreshTriggering){
+    refreshMethods.refreshRunStart(state,ins);
+    state.refreshState.refreshTriggering=false;
+  }else {
+    refreshMethods.refreshBack(state);
+  }
+
+};
+
+var animationend=function(e,ins){
+  var state=ins.getState();
+  if(e.currentTarget.id!==e.target.id || !state.refreshState.refreshBacking)return;
+  refreshMethods.refreshBackEnd(state);
+};
+module.exports={
+  initChange:initChange,
+  canRefreshChange:canRefreshChange,
+  refreshCompleteChange:refreshMethods.refreshRunComplete,
+  touchstart:touchstart,
+  touchend:touchend,
+  touchmove:touchmove,
+  animationend:animationend
+}

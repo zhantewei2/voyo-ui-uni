@@ -1,50 +1,41 @@
 <template>
-	<view class="content">
-        <image class="logo" src="../../static/logo.png"></image>
-		<view>
-            <text class="title">{{title}}</text>
-        </view>
-	</view>
+<view>
+  <voyo-line
+    v-for="(i,index) in  list"
+    :key="index"
+    @tap="tapLine(i)"
+  >
+    <view slot="left">
+      {{i.label}}
+    </view>
+  </voyo-line>
+  <view class="div">
+    22
+  </view>
+</view>
 </template>
 
 <script lang="ts">
-    import Vue from 'vue';
-	export default Vue.extend({
-		data() {
-			return {
-				title: 'Hello'
-			}
-		},
-		onLoad() {
+import Vue from "vue";
+import { Component,Prop } from "vue-property-decorator";
 
-		},
-		methods: {
-
-		}
-	});
+@Component({})
+export default class extends Vue {
+  list=[
+    {path:"/pages/select-page/select-page",label:"select"},
+    {path:"/pages/panel-page/panel-page",label:"panel"},
+    {path:"/pages/cell-page/cell-page",label:"cell"},
+    {path:"/pages/checkbox-page/checkbox-page",label:"checkbox"},
+  ]
+  tapLine(i:any){
+    console.log(i)
+    uni.navigateTo({
+      url:i.path
+    })
+  }
+}
 </script>
 
-<style>
-	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.logo {
-		height: 200rpx;
-		width: 200rpx;
-		margin: 200rpx auto 50rpx auto;
-	}
-
-	.text-area {
-		display: flex;
-		justify-content: center;
-	}
-
-	.title {
-		font-size: 36rpx;
-		color: #8f8f94;
-	}
+<style lang="scss">
+@use "b";
 </style>

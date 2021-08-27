@@ -1,0 +1,8 @@
+{
+  "outputDir":"src/static/css",
+  "imgDir":"cm-webfont/resources",
+  "fontName":"voyo-ui-uni",
+  "fontClassName":"ui-uni",
+  "formats":["woff","woff2"],
+  "base64":true
+}

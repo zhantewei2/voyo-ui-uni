@@ -1,0 +1,119 @@
+@font-face {
+  font-family: "voyo-ui-uni";
+  font-style: normal;
+  font-weight: 400;
+  font-display: auto;
+  
+  src: url("data:font/truetype;charset=utf-8;base64,d09GRgABAAAAAATwAAsAAAAAB7gAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHU1VCAAABCAAAADsAAABUIIslek9TLzIAAAFEAAAAPQAAAFY1mUIfY21hcAAAAYQAAABbAAABmjp67sBnbHlmAAAB4AAAASgAAAGUJdriPGhlYWQAAAMIAAAAJwAAADZfzT6CaGhlYQAAAzAAAAAYAAAAJAF4AM5obXR4AAADSAAAAA4AAAAUAyAAAGxvY2EAAANYAAAADAAAAAwApAEKbWF4cAAAA2QAAAAfAAAAIAETADtuYW1lAAADhAAAATEAAAI6mVi4B3Bvc3QAAAS4AAAANgAAAEgjSiWEeJxjYGRgYOBiMGCwY2BycfMJYeDLSSzJY5BiYGGAAJA8MpsxJzM9kYEDxgPKsYBpDiBmg4gCACY7BUgAeJxjYGRYwDiBgZWBgaGOoQdIykDpBAZOBmMGBiYGVmYGrCAgzTWFweEV4ysWhhNArhCYZGBgBBEAiuIJKQAAAHic7ZG7DYAwDESfk4MCMQgFQzAEFftXWSL4wxic9M7yyXJhAwvQndMR2IMRuj21zDtb5uLIGUU+NKe7hXuv9OazsWPl155+fZ3iVkVerxVE7UV8YahAL2JeD18AeJxlUEFKw1AUfDNNItiY1PD9kS4iJlCxQsQ0TWyFRqi7bEQX9QC9g1fwCh5AxIV4Ab2bL6k7P49h/rw3j/lfIN35lFc5FKnTS0zKqjhBXRXWhPDuB8zpuJw+0HW4QckcSs4fOXD5RJGd/0Xedv5J2eBst6L3tyTmc9DBNbSmSqoaA2KhsFAze/+H/MiRXOgGDZCqz8RXtmgQ26KeVWVIr09Wz/tsK8Qza95XoIuGpMvlUinI/9LzWuU7vZNN38jWBNcqaLO57Uxul8Dpc3zJt/ia5FRyzVKsUOZIA5gEtf6Hp8+r4iz1jL1BUZWTvaxTlCfwsq1vfN8cd+AfRNE4imbtyNpRG1obtsMgGLb7AcLh9m9Ioe2mxtEmTqxN4iY0oZb8ApcAKAF4nGNgZGBgAOLVFyvU4/ltvjJwM5xgwAbWM+wFkhwMTCAOAM4jBgYAeJxjYGRgYDjBwAAn1zMwMqACVgA5GgJHeJxjYACCE6gYABw0AyEAAAAAAAAAIABAAIQAynicY2BkYGBgZdBnYGEAASYg5gJCBob/YD4DAA3EAU8AeJx1z01Kw0AcBfCXfoktiCi4E2YlgiT9cNeFy3bnoovs03aSpqSZMJ0ECp7CE3gKj+DKU3gKl77E/6KInZDMb17eTAiAS3zAQz08DJpnPVo44+rXbepK3KFvxV36XtyjH8V9POBJPMA1Up7gdc6Z3OBF3MIFXsVt5m/iDv0u7tKf4h79Je4jxLd4gDvvuTIH45epX+bpQidlFtmj5IihtvvU5GocjI7Suc61jZxeq+VB7atk4lysYmt2amZyp7PMqMKarV65YONcMR0OY8mDldmhgsGBt4+Sf1o/c84LaCR0hgj2ROf/NOROiz1luFYYI8DoRHfObt70IzjOa/aX7Cnur/j9CVOHmOuYHYMdNWvOrdsZL8OkaN5tmayYB9g0uwpMMeQV/+kHbPGkH6CYZ1YAAAB4nGNgYoAAGI0OWBmZGJkZWRhZGdkY2BKTSzLLUlmLMtMzStiKU3NSk0tYSotTixgYAIceCREAAA==") format("woff"); 
+}
+
+.ui-uni {
+  display: inline-block;
+  font-family: "voyo-ui-uni";
+  font-weight: 400;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ui-uni-lg {
+  font-size: 1.33333em;
+  line-height: 0.75em;
+  vertical-align: -0.0667em;
+}
+
+.ui-uni-xs {
+  font-size: 0.75em;
+}
+
+.ui-uni-sm {
+  font-size: 0.875em;
+}
+
+.ui-uni-1x {
+  font-size: 1em;
+}
+
+.ui-uni-2x {
+  font-size: 2em;
+}
+
+.ui-uni-3x {
+  font-size: 3em;
+}
+
+.ui-uni-4x {
+  font-size: 4em;
+}
+
+.ui-uni-5x {
+  font-size: 5em;
+}
+
+.ui-uni-6x {
+  font-size: 6em;
+}
+
+.ui-uni-7x {
+  font-size: 7em;
+}
+
+.ui-uni-8x {
+  font-size: 8em;
+}
+
+.ui-uni-9x {
+  font-size: 9em;
+}
+
+.ui-uni-10x {
+  font-size: 10em;
+}
+
+.ui-uni-fw {
+  text-align: center;
+  width: 1.25em;
+}
+
+.ui-uni-border {
+  border: solid 0.08em #eee;
+  border-radius: 0.1em;
+  padding: 0.2em 0.25em 0.15em;
+}
+
+.ui-uni-pull-left {
+  float: left;
+}
+
+.ui-uni-pull-right {
+  float: right;
+}
+
+.ui-uni.ui-uni-pull-left {
+  margin-right: 0.3em;
+}
+
+.ui-uni.ui-uni-pull-right {
+  margin-left: 0.3em;
+}
+
+
+.ui-uni-active::before {
+  content: "\ea01";
+}
+
+.ui-uni-right::before {
+  content: "\ea02";
+}
+
+.ui-uni-select::before {
+  content: "\ea03";
+}
+
+.ui-uni-user::before {
+  content: "\ea04";
+}
+

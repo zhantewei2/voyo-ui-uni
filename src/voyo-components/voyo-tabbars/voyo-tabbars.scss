@@ -1,0 +1,47 @@
+@import "~@voyo/core-style/lib/vars.scss";
+@import "~@voyo/core-style/lib/mixins/mixins.scss";
+@import "~@voyo/core-style/lib/components-var.scss";
+
+.voyo-tab-bar-container{
+  padding:0;
+  position:relative;
+  display:block;
+  width:100%;
+  height:$--voyo-tab-bar-item-h;
+
+}
+.voyo-tab-bar-area{
+  position:relative;
+  display:flex;
+  box-sizing: border-box;
+  height: $--voyo-tab-bar-item-h;
+  &.borderTop{
+    @include AfterBorder(top);
+  }
+  &.borderBottom{
+    @include AfterBorder();
+  }
+}
+.voyo-tab-bar-thumb{
+  position: absolute;
+  //bottom:20px;
+  left:0;
+  bottom:$--voyo-tab-bar-thumb-bottom;
+  width:$--voyo-tab-bar-thumb-w;
+  height:$--voyo-tab-bar-thumb-h;
+  will-change:transform;
+  box-sizing: border-box;
+  opacity:1;
+  z-index:2;
+  @include Transition($type:fast);
+  .voyo-tab-bar-thumb-change{
+    height:100%;
+    width:100%;
+    background:$--voyo-tab-bar-color;
+    top:0;
+    left:0;
+    will-change:transform;
+    opacity:1;
+    border-radius:5px;
+  }
+}

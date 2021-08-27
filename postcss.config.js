@@ -17,6 +17,7 @@ module.exports = {
     require('autoprefixer')({
       remove: process.env.UNI_PLATFORM !== 'h5'
     }),
+    require("postcss-inline-svg")({}),
     require('@dcloudio/vue-cli-plugin-uni/packages/postcss')
   ]
 }
