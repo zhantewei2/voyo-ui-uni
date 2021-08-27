@@ -56,7 +56,7 @@ export default class extends Vue {
   tap(e:any,control?:boolean){
     if(this.disableTrigger&&!control)return ;
     this.rippleStart();
-    this.touchend();
+    this.touchend(e,control);
     !this.disabled&&this.rippleTap(e);
   }
   touchend(e:any,control?:boolean){
