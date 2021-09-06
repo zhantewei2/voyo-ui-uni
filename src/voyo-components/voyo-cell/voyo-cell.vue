@@ -80,9 +80,9 @@ const variousTap=(bind:VoyoCell,detail:{x:number,y:number})=>{
 export default class VoyoCell extends Vue {
   @Prop({})type:CellType;
   @Prop({})to:string;
-  @Prop({})title:string;
-  @Prop({})label:string;
-  @Prop({})value:string;
+  @Prop({default:""})title:string;
+  @Prop({default:""})label:string;
+  @Prop({default:""})value:string;
   @Prop({default:true})ripple:boolean;
   @Prop({default:setting.cell.border})border:boolean;
   @Prop({default:""})valueWidth:string;  //100px or 50vw
