@@ -58,7 +58,7 @@ export default {
 
   props:{
     "shadow":{
-      type: String,
+      type: Boolean,
       default: false,
     },
     "size":{

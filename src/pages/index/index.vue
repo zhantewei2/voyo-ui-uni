@@ -28,7 +28,6 @@ export default class extends Vue {
     {path:"/pages/checkbox-page/checkbox-page",label:"checkbox"},
   ]
   tapLine(i:any){
-    console.log(i)
     uni.navigateTo({
       url:i.path
     })
