@@ -11,7 +11,7 @@
         'voyo-alert-bg-' + bgColor,
         'voyo-alert-font-' + fontColor,
         'voyo-text-size-' + size,
-        round?'__round':''
+        round ? '__round' : '',
       ]"
     >
       <view v-if="$slots.prefix" class="_voyo-alert-prefix">
@@ -31,7 +31,8 @@
 </template>
 
 <script>
-import { setting } from "@voyo/ui-uni/components/setting.service";
+import { setting } from "@voyo/ui-uni/src/voyo-components/setting.service";
+import { ExcuteAfterConnected } from "@voyo/ui-uni/src/voyo-components/utils";
 
 export default {
   props: {
@@ -51,10 +52,22 @@ export default {
       type: String,
       default: "small",
     },
-    round:{
-      type:Boolean,
-      default:false
-    }
+    round: {
+      type: Boolean,
+      default: false,
+    },
+    show: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  watch: {
+    show: {
+      immediate: true,
+      handler(v) {
+        this.visible = v;
+      },
+    },
   },
   beforeCreate() {
     // this.excuteAfterConnected = new ExcuteAfterConnected();
@@ -71,8 +84,8 @@ export default {
       this.$emit("close", true);
     },
   },
-  mounted() {},
+  mounted() {
+    // this.excuteAfterConnected.connect();
+  },
 };
 </script>
-
-<style lang="scss" scoped></style>

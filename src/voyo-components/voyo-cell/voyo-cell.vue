@@ -33,7 +33,7 @@
       </view>
       <text v-if="rightIcon" :class="['_right-icon',rightIcon]"></text>
     </view>
-   <voyo-ripple ></voyo-ripple>
+   <voyo-ripple v-if="ripple"></voyo-ripple>
  </view>
  
 </template>

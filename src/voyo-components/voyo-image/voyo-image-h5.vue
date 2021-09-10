@@ -1,32 +1,32 @@
 <template>
   <div
-    :style="{
+      :style="{
       width: width,
       height: height,
     }"
-    class="voyo-image-simple"
-    id="wrapper"
-    :class="{
+      class="voyo-image-simple"
+      id="wrapper"
+      :class="{
       __gentle: bgGentle,
     }"
-    ref="wrapper"
+      ref="wrapper"
   >
     <img v-if="loading" :src="loadImg" class="voyo-img-loading abs-center" />
     <img
-      :mode="mode"
-      v-if="!loadError && lazyOnce"
-      :class="{
+        :mode="mode"
+        v-if="!loadError && lazyOnce"
+        :class="{
         '_img-loading': !lazyShow || !loadSuccess,
       }"
-      class="voyo-an-fadeIn0 abs-full"
-      @load="success"
-      @error="error"
-      :src="src"
+        class="voyo-an-fadeIn0 abs-full"
+        @load="success"
+        @error="error"
+        :src="src"
     />
     <image
-      class="voyo-img-loading abs-center"
-      v-if="loadError"
-      :src="loadErrImg"
+        class="voyo-img-loading abs-center"
+        v-if="loadError"
+        :src="loadErrImg"
     />
   </div>
 </template>
@@ -64,6 +64,11 @@ export default {
       type: Number,
       default: 150,
     },
+    performance:{
+      type: Boolean,
+      default: true
+    },
+    relativeViewport:{},
   },
   watch: {},
   data() {
@@ -103,14 +108,14 @@ export default {
           const entry = entries[0];
           clearDelayShow();
           if (entry.isIntersecting) {
-            if (this.lazyOnce) {
-              this.lazyShow = true;
-            } else {
-              this.delayShow = setTimeout(() => {
-                this.lazyShow = this.lazyOnce = true;
-                this.delayShow = null;
-              }, this.lazyDelayShow);
-            }
+            this.delayShow = setTimeout(() => {
+              this.lazyShow = this.lazyOnce = true;
+              this.delayShow = null;
+              if(!this.performance){
+                this.intersection.disconnect();
+                this.intersection=null;
+              }
+            }, this.lazyDelayShow);
           } else {
             this.lazyShow = false;
           }

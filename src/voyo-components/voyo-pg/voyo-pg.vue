@@ -7,6 +7,11 @@
           @refreshStart="refresh"
       >
         <slot></slot>
+        <voyo-load-error @tap="init" v-if="!bindListLength&&initError">
+          {{ errorHint }}
+        </voyo-load-error>
+        <voyo-empty @tap="init" v-if="!bindListLength&&isEmpty">{{ emptyHint }}</voyo-empty>
+
         <view class="voyo-pagination-bottom-area">
           <voyo-load size="small" :show="downLoading">加载中</voyo-load>
           <view class="voyo-text-des" v-if="downNoMore">没有更多了</view>
@@ -22,10 +27,8 @@
         :show="initLoading"
         imgType="block"
     ></voyo-load>
-    <voyo-load-error @tap="init" v-if="!bindListLength&&initError">
-      {{ errorHint }}
-    </voyo-load-error>
-    <voyo-empty @tap="init" v-if="!bindListLength&&isEmpty">{{ emptyHint }}</voyo-empty>
+
+
   </view>
 </template>
 <script>
