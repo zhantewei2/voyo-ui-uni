@@ -7,6 +7,7 @@
       'voyo-btn',
       'voyo-btn-' + type,
       'voyo-btn-size-' + size,
+      shadow? 'voyo-btn-shadow-' +color: '',
       '__' + color,
       rippleCbValue ? 'ripple-callback' : '',
       loading ? '__loading' : '',
@@ -56,6 +57,10 @@ export default {
   },
 
   props:{
+    "shadow":{
+      type: String,
+      default: false,
+    },
     "size":{
       type:String,
       default :"now"
