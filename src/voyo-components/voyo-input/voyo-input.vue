@@ -166,8 +166,10 @@
     },
     methods: {
       inputBlur(e) {
-        this.isFocus = false;
-        this.$emit("blur", e);
+        setTimeout(()=>{
+          this.isFocus = false;
+          this.$emit("blur", e);
+        },50)
       },
       inputFocus(e) {
         this.isFocus = true;

@@ -12,17 +12,15 @@
       ref="wrapper"
   >
     <img v-if="loading" :src="loadImg" class="voyo-img-loading abs-center" />
-    <img
-        :mode="mode"
-        v-if="!loadError && lazyOnce"
-        :class="{
-        '_img-loading': !lazyShow || !loadSuccess,
-      }"
-        class="voyo-an-fadeIn0 abs-full"
-        @load="success"
-        @error="error"
-        :src="src"
-    />
+    <div v-if="loadSuccess && lazyShow" :style="{
+      backgroundImage: 'url('+src+')',
+      backgroundSize: 'cover'
+    }"
+         class="voyo-an-fadeIn0 abs-full"
+         :class="['img-'+mode]"
+    >
+
+    </div>
     <image
         class="voyo-img-loading abs-center"
         v-if="loadError"
@@ -109,6 +107,7 @@ export default {
           clearDelayShow();
           if (entry.isIntersecting) {
             this.delayShow = setTimeout(() => {
+              this.loadImage(this.src);
               this.lazyShow = this.lazyOnce = true;
               this.delayShow = null;
               if(!this.performance){
@@ -122,9 +121,19 @@ export default {
         });
         this.intersection.observe(this.$refs.wrapper);
       } else {
+        this.loadImage(this.src);
         this.lazyShow = this.lazyOnce = true;
       }
     },
+    loadImage(url){
+      if(this.lazyOnce)return;
+      const img=new Image();
+      img.onload=()=>{
+        this.success();
+      }
+      img.onerror=()=>this.this.error();
+      img.src=url;
+    }
   },
   async mounted() {
     if (this.aspectRatio) {
