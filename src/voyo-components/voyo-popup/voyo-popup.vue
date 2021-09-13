@@ -105,8 +105,8 @@ export default {
       this.hideTimeout = null;
     },
     setHideTimeout() {
-      this.setIsShow(false);
       this.hideTimeout = setTimeout(() => {
+        this.setIsShow(false);
         this.leaving=false;
       }, 300);
     },

@@ -138,6 +138,10 @@
       noBorder:{
         type: Boolean,
         default :false
+      },
+      alwaysClear:{
+        type: Boolean,
+        default :false
       }
     },
     watch: {
@@ -154,7 +158,7 @@
         return this.value0 !== 0 && !this.value0 && !this.isFocus;
       },
       canClear() {
-        return !!this.value0 && this.clearable && this.isFocus;
+        return !!this.value0 && this.clearable && (this.isFocus|| this.alwaysClear);
       },
     },
     data() {
