@@ -1,5 +1,5 @@
 <template>
-  <view>
+<!--  <view>-->
     <view
       v-if="visible"
       class="voyo-load-wrapper"
@@ -30,7 +30,7 @@
         </view>
       </view>
     </view>
-  </view>
+<!--  </view>-->
 </template>
 <script>
 import { setting } from "../setting.service";

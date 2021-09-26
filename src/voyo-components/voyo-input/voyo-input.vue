@@ -23,7 +23,7 @@
         <view class="_placeholder"> {{ placeholder }} </view>
       </label>
       <label class="_input-container">
-        <view class="_input" v-if="onlyTap" @tap="inputTap">{{value0}} </view>
+        <view class="_input __only-tap" v-if="onlyTap" @tap="inputTap">{{value0}} </view>
         <view
             class="_input __visual-input"
             v-if="visual"
@@ -53,7 +53,7 @@
         />
       </label>
       <label @click="clear" class="_clear">
-        <label class="za za-close"></label>
+        <label class="_input-clear-icon za za-close"></label>
       </label>
       <label class="_suffix">
         <slot name="suffix"></slot>
