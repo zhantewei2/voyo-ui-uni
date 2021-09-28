@@ -4,6 +4,7 @@
         v-if="initContent"
         id="scrollView"
         ref="scrollView"
+        :scroll-top="upperPosition"
         :scroll-y="canScrollAll"
         :style="[
         height0 ? { height: height0 + 'px' } : null,
@@ -53,6 +54,7 @@ export default {
       usePagination: true, //tmp true
       isScrollUpperBound: true,
       innerUpperBehavior: false,
+      upperPosition:0,
     };
   },
   props: {
@@ -129,7 +131,7 @@ export default {
     this.scrollEvent=new Subject();
     let scrollH5Container;
 
-    this.sub = merge(
+    this.scrollBetterSubject = merge(
         of({
           detail:{scrollTop:0}
         }),
@@ -167,8 +169,9 @@ export default {
         map((event) => ({
           tab: this,
           event,
-        })),
-    ).subscribe(i=>this.scrollEvent.next(i))
+        })));
+
+    this.sub=this.scrollBetterSubject.subscribe(i=>this.scrollEvent.next(i))
   },
   mounted() {
     let detail;
@@ -193,6 +196,9 @@ export default {
     });
   },
   methods: {
+    toUpper(){
+      this.upperPosition=this.upperPosition===0?1:0;
+    },
     getScrollTop() {
       return this.scrollTop;
     },
