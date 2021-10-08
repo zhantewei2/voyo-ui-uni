@@ -144,6 +144,7 @@ export default {
                   if (scrollLeft > maxScrollLeft) scrollLeft = maxScrollLeft;
                   itemRef.scrollLeft = scrollLeft;
                 });
+                
                 this.moveViewWidth = thumbLeftTotal + "px";
                 //ready
                 this.readyEnd();

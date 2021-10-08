@@ -12,11 +12,11 @@
         fixCenter || fixCenter === '' ? 'fix-center' : '',
         imgType === 'block' ? '__type-block' : '',
         absCenterPage || absCenterPage === '' ? 'abs-center-page' : '',
+        className,
       ]"
-      :style="{
-        marginTop: abs || abs === '' ? '' : top + 'px',
-        top: abs || abs === '' ? top + 'px' : '',
-      }"
+      :style="[
+          top?{top:top+'px'}:{}
+      ]"
     >
       <view class="_view">
         <!--        <text-->
@@ -45,6 +45,10 @@ export default {
     };
   },
   props: {
+    className: {
+      type:String,
+      default:""
+    },
     imgType: {
       type: String, // "default" | "block"
       default: "default",

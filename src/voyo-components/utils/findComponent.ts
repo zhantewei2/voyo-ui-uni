@@ -8,22 +8,26 @@ const TabsName="voyo-tabs";
 const TabbarsName="voyo-tabbars";
 const TabbarName="voyo-tabbar";
 const TabSlotName="voyo-tab-slot-wrapper";
+const TabsSlotName="voyo-tabs-slot-wrapper";
 
 const findComponent=(componentInstance:Vue,componentName:string):Vue|undefined=>
   componentInstance.$data.componentName===componentName?componentInstance:undefined;
 
 const findParentTarget=(parent:Vue,componentName:string):Vue|undefined=>{
+  console.log(123,parent);
   if(parent.$data.componentName===componentName)return parent;
   return parent.$parent?findParentTarget(parent.$parent,componentName):undefined;
 }
 
 const findParentComponent=(componentInstance:Vue,componentName:string,SlotNodeType:string):Vue|undefined=>{
+  
   if(!isH5){
-    return findComponent(componentInstance,componentName);
+
+    return findParentTarget(componentInstance,componentName);
   }else{
     const instance=findComponent(componentInstance,componentName);
-    if(instance)return instance;
 
+    if(instance)return instance;
     if(componentInstance.$el&&componentInstance.$el.getAttribute("data-voyo-type")===SlotNodeType){
       return findParentTarget(componentInstance.$parent,componentName);
     }else{
@@ -43,6 +47,8 @@ const isTabbars=(i:Vue)=>findComponent(i,TabbarsName);
 const isTabbar=(i:Vue)=>findComponent(i,TabbarName);
 
 const isTabParent=(i:Vue)=>findParentComponent(i,TabName,TabSlotName);
+
+const isTabsParent=(i:Vue)=>findParentComponent(i,TabsName,TabsSlotName);
 
 const findChildrenFromList=(instance:Vue,name:string):Vue|undefined=>{
   if(!isH5){
@@ -69,5 +75,8 @@ export {
   isTabbars,
   isTabbar,
   isTabParent,
+  isTabsParent,
+  findParentTarget,
+  findParentComponent,
   findChildrenFromList
 }

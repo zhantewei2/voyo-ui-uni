@@ -98,6 +98,7 @@ export default class extends Vue {
           height:screenRect.height,
           spaceTop: pageHeaderTotalH
         },useAlign)
+
         this.originPosition=relativeFixed.switchOrigin(targetRect,resizeRect,useAlign);
         this.entry(resizeRect)
       });

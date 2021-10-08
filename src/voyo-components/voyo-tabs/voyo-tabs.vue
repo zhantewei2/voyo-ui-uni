@@ -7,7 +7,7 @@
         }:null
       ]"
   >
-    <view v-if="compatibilityFlex1" class="abs-full">
+    <view v-if="compatibilityFlex1" class="abs-full" data-voyo-type="voyo-tabs-slot-wrapper">
       <slot></slot>
     </view>
     <block else>
@@ -62,14 +62,18 @@ export default {
     this.excuteAfterConnected = new ExcuteAfterConnected();
     this.scrollSubject = new Subject();
     this.tabStatList = [];
+    this.tabList=[];
+    this.tabCount=0;
   },
   mounted() {
     let tabIndex = 0;
+    
     this.tabList = (
         isH5?
             this.$slots.default.map(i=>i.componentInstance):
             this.$children
     ).filter((componentInstance) => {
+      
       if (componentInstance.$data.componentName === "voyo-tab") {
         componentInstance.tabIndex = tabIndex;
         this.tabStatList.push({ tabIndex, top: 0, tab: componentInstance });
@@ -77,11 +81,22 @@ export default {
         return true;
       }
     });
-    this.listenTabsScroll();
-    this.excuteAfterConnected.connect();
-    if (this.immediateIndex) this.selectActiveTab(this.index);
+    setTimeout(()=>{
+      this.listenTabsScroll();
+      this.excuteAfterConnected.connect();
+      if (this.immediateIndex) this.selectActiveTab(this.index);
+    })
   },
   methods: {
+    registryTab(tabComponentInstance){
+      tabComponentInstance.tabIndex=this.tabCount;
+      this.tabList.push(tabComponentInstance);
+      this.tabStatList.push({
+        tabIndex: this.tabCount++,
+        top:0,
+        tab:tabComponentInstance
+      })
+    },
     listenTabsScroll() {
       let index;
       let top;

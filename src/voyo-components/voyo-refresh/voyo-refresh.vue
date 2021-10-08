@@ -8,33 +8,33 @@
       :refreshCompleteVal="refreshCompleteValue"
       :change:refreshCompleteVal="controller.refreshCompleteChange"
   >
-
-    <slot name="prefix"></slot>
-    <view class="rel">
-      <view
-          class="voyo-refresh-content"
-          :style="{
+ 
+      <slot name="prefix"></slot>
+      <view class="rel">
+        <view
+            class="voyo-refresh-content"
+            :style="{
             height: '80px',
           }"
-      >
-        <view class="voyo-refresh-content-item" id="refreshItem">
-          <image class="_img" :src="refreshItemIcon"></image>
-          <text>{{ refreshItemText }}</text>
-        </view>
-        <view class="voyo-refresh-content-item" id="refreshTriggerItem">
-          <image class="_img" :src="refreshTriggerIcon"></image>
-          <text>{{ refreshTriggerText }}</text>
-        </view>
-        <view class="voyo-refresh-content-item" id="refreshRunningItem">
-          <image class="_img" :src="refreshRunIcon"></image>
-          <text>{{ refreshRunText }}</text>
-        </view>
-        <view class="voyo-refresh-content-item" id="refreshSuccessItem">
-          <image class="_img" :src="refreshSuccessIcon"></image>
-          <text>{{ refreshSuccessText }}</text>
+        >
+          <view class="voyo-refresh-content-item" id="refreshItem">
+            <image class="_img" :src="refreshItemIcon"></image>
+            <text>{{ refreshItemText }}</text>
+          </view>
+          <view class="voyo-refresh-content-item" id="refreshTriggerItem">
+            <image class="_img" :src="refreshTriggerIcon"></image>
+            <text>{{ refreshTriggerText }}</text>
+          </view>
+          <view class="voyo-refresh-content-item" id="refreshRunningItem">
+            <image class="_img" :src="refreshRunIcon"></image>
+            <text>{{ refreshRunText }}</text>
+          </view>
+          <view class="voyo-refresh-content-item" id="refreshSuccessItem">
+            <image class="_img" :src="refreshSuccessIcon"></image>
+            <text>{{ refreshSuccessText }}</text>
+          </view>
         </view>
       </view>
-    </view>
 
     <view
         @touchmove="controller.touchmove"
@@ -63,79 +63,80 @@
   </view>
 </template>
 <script lang="js">
-import {setting}from "../setting.service";
-export default {
-  props: {
-    enabled: {
-      type:Boolean ,
-      default:true,
+  import {setting}from "../setting.service";
+  export default {
+    props: {
+      enabled: {
+        type:Boolean ,
+        default:true,
+      },
+      refreshItemText:{
+        type:String,
+        default:setting.refresh.itemText
+      },
+      refreshItemIcon:{
+        type:String,
+        default:setting.refresh.itemIcon
+      },
+      refreshTriggerText:{
+        type:String,
+        default:setting.refresh.triggerText
+      },
+      refreshTriggerIcon:{
+        type:String,
+        default:setting.refresh.triggerIcon
+      },
+      refreshRunText:{
+        type:String,
+        default:setting.refresh.runText
+      },
+      refreshRunIcon:{
+        type:String,
+        default:setting.refresh.runIcon
+      },
+      refreshSuccessText:{
+        type:String,
+        default:setting.refresh.successText
+      },
+      refreshSuccessIcon:{
+        type:String,
+        default:setting.refresh.successIcon
+      }
     },
-    refreshItemText:{
-      type:String,
-      default:setting.refresh.itemText
+    computed:{
+      canRefresh(){
+        return this.enabled&&!this.refreshing;
+      }
     },
-    refreshItemIcon:{
-      type:String,
-      default:setting.refresh.itemIcon
+    data() {
+      return {
+        refreshing: false,
+        init:{},
+        refreshCompleteValue:0
+      }
     },
-    refreshTriggerText:{
-      type:String,
-      default:setting.refresh.triggerText
+    mounted(){
+      this.init={
+        canRefresh: this.canRefresh
+      };
     },
-    refreshTriggerIcon:{
-      type:String,
-      default:setting.refresh.triggerIcon
+    methods:{
+      show(...args){
+        console.log(...args);
+      },
+      move(e){
+        const touch=e.touches[0];
+      },
+      refreshStart(){
+        this.refreshing=true;
+        this.$emit("refreshStart","");
+      },
+      refreshComplete(){
+        this.refreshing=false;
+        this.refreshCompleteValue++;
+      }
     },
-    refreshRunText:{
-      type:String,
-      default:setting.refresh.runText
-    },
-    refreshRunIcon:{
-      type:String,
-      default:setting.refresh.runIcon
-    },
-    refreshSuccessText:{
-      type:String,
-      default:setting.refresh.successText
-    },
-    refreshSuccessIcon:{
-      type:String,
-      default:setting.refresh.successIcon
-    }
-  },
-  computed:{
-    canRefresh(){
-      return this.enabled&&!this.refreshing;
-    }
-  },
-  data() {
-    return {
-      refreshing: false,
-      init:false,
-      refreshCompleteValue:0
-    }
-  },
-  mounted(){
-    this.init=true;
-  },
-  methods:{
-    show(...args){
-      console.log(...args);
-    },
-    move(e){
-      const touch=e.touches[0];
-      console.log("move",touch.pageY);
-    },
-    refreshStart(){
-      this.refreshing=true;
-      this.$emit("refreshStart","");
-    },
-    refreshComplete(){
-      this.refreshing=false;
-      this.refreshCompleteValue++;
-    }
-  },
-};
+  };
 </script>
 <script src="./voyo-refresh.wxs" lang="wxs" module="controller"></script>
 <style lang="scss"></style>

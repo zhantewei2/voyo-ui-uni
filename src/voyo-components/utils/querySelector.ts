@@ -35,6 +35,7 @@ export const getSelectRect=(
     ()=>(uni.createSelectorQuery().in(component).select(queryCondition)as any).boundingClientRect(),
     (([rect]:any)=>rect&&rect.width)
   ).subscribe(([rect]:any)=>{
+    console.log("deb",rect);
     let align:Align;
     if(autoAlign&&rect.width>=baseAlignWidth){
       const x=detail.x-rect.left;

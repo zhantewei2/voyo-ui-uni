@@ -29,6 +29,7 @@
 <script>
 import {merge, Observable, of, Subject,timer,interval} from "rxjs";
 import {ExcuteAfterConnected} from "../utils";
+import {isTabsParent} from "../utils/findComponent";
 import {debounceTime, map, mergeMap,debounce,retry} from "rxjs/operators";
 
 export default {
@@ -170,7 +171,7 @@ export default {
           tab: this,
           event,
         })));
-
+    
     this.sub=this.scrollBetterSubject.subscribe(i=>this.scrollEvent.next(i))
   },
   mounted() {
@@ -194,6 +195,12 @@ export default {
         isBottom = false;
       }
     });
+    if(this.isInner){
+      const tabs=isTabsParent(this);
+      if(!tabs)console.error("tabs none exists");
+      tabs.registryTab(this);
+    }
+    
   },
   methods: {
     toUpper(){

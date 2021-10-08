@@ -3,7 +3,11 @@
     id="voyo-tab-page"
     :scroll-y="enableScroll"
     class="voyo-tab-page"
+    :class="{
+      gentle:gentle
+    }"
     @scroll="scroll"
+    :scroll-top="scrollPos"
   >
     <view class="voyo-tab-page-container">
       <slot></slot>
@@ -12,7 +16,7 @@
 </template>
 <script>
   import { TabGroupName, findChildrenFromList, TabsName } from "../utils/findComponent";
-  import { systemInfo } from "../utils";
+  import { systemInfo ,ExcuteAfterConnected} from "../utils";
   import { Subject, merge, Observable } from "rxjs";
   import { debounceTime, mergeMap } from "rxjs/operators";
 
@@ -32,6 +36,7 @@
     data() {
       return {
         enableScroll: true,
+        scrollPos:0,
       };
     },
     props: {
@@ -40,8 +45,31 @@
         type: Number,
         default: 0,
       },
+      gentle:{
+        type:Boolean,
+        default:false,
+      },
+      initTabs:{
+        type:Boolean,
+        default: true
+      }
+    },
+    watch:{
+      initTabs:{
+        immediate:true,
+        handler(v){
+          if(v){
+            this.execute.execute(()=>{
+              this.findTabbars().then(() => {
+                this.initCheckScroll();
+              });
+            })
+          }
+        }
+      }
     },
     beforeCreate() {
+      this.execute=new ExcuteAfterConnected();
       this.pageTop = 0;
       this.scrollTop = 0;
       this.pageHeight = 0;
@@ -77,11 +105,12 @@
           this.pageTop = rect.top;
           this.pageHeight = rect.height;
         });
-      this.findTabbars().then(() => {
-        this.initCheckScroll();
-      });
+      this.execute.connect();
     },
     methods: {
+      scrollTo(x){
+        this.scrollPos=x;
+      },
       /**
        * find from primary level
        * @returns {Promise<void>}
@@ -91,7 +120,6 @@
         this.tabs = findChildrenFromList(this, TabsName);
 
         this.tabGroup = findChildrenFromList(this, TabGroupName);
-
         if (!this.tabs && this.tabGroup) {
           await this.tabGroup.mountedPromise();
           this.tabs = findChildrenFromList(this.tabGroup, TabsName);
