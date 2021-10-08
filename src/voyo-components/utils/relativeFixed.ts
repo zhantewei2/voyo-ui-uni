@@ -20,7 +20,8 @@ export class RelativeFixed{
     const topStr=top>bottom?'b':'t';
     // console.log("111",left,right)
     // const leftStr=left>right?(align==='left'?'r':'l'):(align==='left'?'l':'r');
-    const leftStr=left>right?'l':'r';
+    // const leftStr=left>right?'l':'r';
+    const leftStr=Math.abs(left)<Math.abs(right)?'l':'r';
     return topStr+leftStr as any;
   }
 

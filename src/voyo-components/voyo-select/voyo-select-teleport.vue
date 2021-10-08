@@ -101,7 +101,7 @@ export default class extends Vue {
         this.originPosition=relativeFixed.switchOrigin(targetRect,resizeRect,useAlign);
         this.entry(resizeRect)
       });
-    },50);
+    },1);
   }
 
   entry(resizeRect:Rect){

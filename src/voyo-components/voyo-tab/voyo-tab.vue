@@ -60,7 +60,7 @@ export default {
   props: {
     iosBounces:{
       type:Boolean,
-      default :true
+      default :false
     },
     isInner: {
       type: Boolean,
