@@ -48,7 +48,7 @@ export default {
     this.excuteAfterConnected = new ExcuteAfterConnected();
   },
   mounted() {
-
+    
     if(isH5){
       this.$slots.default.forEach((i) => {
         const componentInstance=i.componentInstance;
@@ -63,8 +63,7 @@ export default {
         if (componentName === "voyo-tabbars") this.tabbars = i;
       })
     }
-
-
+    
     if (!this.tabs || !this.tabbars)
       throw new Error("A lack of tabs or tabbars");
     this.tabbars.$on("input", (index) => {

@@ -8,6 +8,8 @@
     }"
     @scroll="scroll"
     :scroll-top="scrollPos"
+    :enhanced="true"
+    :bounces="false"
   >
     <view class="voyo-tab-page-container">
       <slot></slot>
@@ -74,21 +76,19 @@
       this.scrollTop = 0;
       this.pageHeight = 0;
       this.scrollChange = new Subject();
+      this.scrollHeightInit=false;
       this.scrollChangeAll = merge(
         this.scrollChange,
         this.scrollChange.pipe(
-          debounceTime(200),
+          debounceTime(100),
           mergeMap((e) => {
+            if(!this.scrollNodeRef)this.scrollNodeRef=uni.createSelectorQuery().in(this).select(".voyo-tab-page").scrollOffset();
             return new Observable((ob) => {
-              uni
-                .createSelectorQuery()
-                .in(this)
-                .select(".voyo-tab-page-container")
-                .boundingClientRect()
-                .exec(([rect]) => {
-                  e.detail.scrollTop = 0 - rect.top + this.pageTop;
-                  ob.next(e);
-                });
+              this.scrollNodeRef.exec(([r]) => {
+                ob.next({detail:r});
+                ob.complete();
+              })
+
             });
           }),
         ),
@@ -96,18 +96,22 @@
       this.scrollChangeAll.subscribe((e) => this.listenScroll(e));
     },
     mounted() {
-      uni
-        .createSelectorQuery()
-        .in(this)
-        .select("#voyo-tab-page")
-        .boundingClientRect()
-        .exec(([rect]) => {
-          this.pageTop = rect.top;
-          this.pageHeight = rect.height;
-        });
       this.execute.connect();
     },
     methods: {
+      getPageHeight(){
+        return new Promise((resolve)=>{
+          uni
+              .createSelectorQuery()
+              .in(this)
+              .select("#voyo-tab-page")
+              .boundingClientRect()
+              .exec(([rect]) => {
+                this.pageTop = rect.top;
+                resolve(this.pageHeight = rect.height);
+              });
+        })
+      },
       scrollTo(x){
         this.scrollPos=x;
       },
@@ -123,6 +127,7 @@
         if (!this.tabs && this.tabGroup) {
           await this.tabGroup.mountedPromise();
           this.tabs = findChildrenFromList(this.tabGroup, TabsName);
+          
         }
       },
       scroll(e) {
@@ -144,23 +149,31 @@
         });
       },
 
-      listenScroll(e) {
+      async listenScroll(e) {
+ 
+        
         this.scrollTop = e.detail.scrollTop;
         this.scrollHeight = e.detail.scrollHeight;
+        if(!this.pageHeight||(!this.scrollHeightInit&&this.scrollTop)){
+          this.pageHeight=await this.getPageHeight();
+          if(this.scrollTop)this.scrollHeightInit=true;
+        }
         this.scrollMax = Math.floor(
           this.scrollHeight - this.pageHeight - this.bottomDistance,
-        );
+        )-1;
+        console.log("pageHeight",this.pageHeight,this.scrollHeight);
+        console.log("scroll",this.scrollTop,this.scrollMax);
         if (this.scrollTop >= this.scrollMax && this.tabsScrollIsDisabled) {
           this.tabsScrollIsDisabled = false;
           this.tabs && this.tabs.enableScroll();
-          console.debug("page scroll", "tabs enable scroll");
+          console.log("page scroll", "tabs enable scroll");
         } else if (
           this.scrollTop < this.scrollMax &&
           !this.tabsScrollIsDisabled
         ) {
           this.tabsScrollIsDisabled = true;
           this.tabs && this.tabs.disableScroll();
-          console.debug("page scroll", "tabs disable scroll");
+          console.log("page scroll", "tabs disable scroll");
         }
       },
     },

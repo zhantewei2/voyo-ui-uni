@@ -195,11 +195,11 @@ export default {
         isBottom = false;
       }
     });
-    if(this.isInner){
-      const tabs=isTabsParent(this);
-      if(!tabs)console.error("tabs none exists");
-      tabs.registryTab(this);
-    }
+    // if(this.isInner){
+    //   const tabs=isTabsParent(this);
+    //   if(!tabs)console.error("tabs none exists");
+    //   tabs.registryTab(this);
+    // }
     
   },
   methods: {

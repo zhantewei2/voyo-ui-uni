@@ -14,7 +14,6 @@ const findComponent=(componentInstance:Vue,componentName:string):Vue|undefined=>
   componentInstance.$data.componentName===componentName?componentInstance:undefined;
 
 const findParentTarget=(parent:Vue,componentName:string):Vue|undefined=>{
-  console.log(123,parent);
   if(parent.$data.componentName===componentName)return parent;
   return parent.$parent?findParentTarget(parent.$parent,componentName):undefined;
 }

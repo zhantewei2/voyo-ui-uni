@@ -18,7 +18,9 @@
 <script>
 import { ExcuteAfterConnected } from "../utils/excuteAfterConnected";
 import { Subject, merge } from "rxjs";
-import { isH5 } from "../utils";
+import { isH5} from "../utils";
+import { findChildrenFromList,TabName} from "../utils/findComponent";
+
 export default {
   props: {
     height: {
@@ -66,26 +68,19 @@ export default {
     this.tabCount=0;
   },
   mounted() {
-    let tabIndex = 0;
-    
     this.tabList = (
         isH5?
             this.$slots.default.map(i=>i.componentInstance):
             this.$children
     ).filter((componentInstance) => {
-      
       if (componentInstance.$data.componentName === "voyo-tab") {
-        componentInstance.tabIndex = tabIndex;
-        this.tabStatList.push({ tabIndex, top: 0, tab: componentInstance });
-        tabIndex++;
+        this.registryTab(componentInstance);
         return true;
       }
     });
-    setTimeout(()=>{
-      this.listenTabsScroll();
-      this.excuteAfterConnected.connect();
-      if (this.immediateIndex) this.selectActiveTab(this.index);
-    })
+    this.listenTabsScroll();
+    this.excuteAfterConnected.connect();
+    if (this.immediateIndex) this.selectActiveTab(this.index);
   },
   methods: {
     registryTab(tabComponentInstance){
@@ -96,6 +91,7 @@ export default {
         top:0,
         tab:tabComponentInstance
       })
+     
     },
     listenTabsScroll() {
       let index;
