@@ -161,8 +161,6 @@
         this.scrollMax = Math.floor(
           this.scrollHeight - this.pageHeight - this.bottomDistance,
         )-1;
-        console.log("pageHeight",this.pageHeight,this.scrollHeight);
-        console.log("scroll",this.scrollTop,this.scrollMax);
         if (this.scrollTop >= this.scrollMax && this.tabsScrollIsDisabled) {
           this.tabsScrollIsDisabled = false;
           this.tabs && this.tabs.enableScroll();
