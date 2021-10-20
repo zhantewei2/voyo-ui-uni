@@ -11,7 +11,7 @@
     :enhanced="true"
     :bounces="false"
   >
-    <view class="voyo-tab-page-container">
+    <view class="voyo-tab-page-container" data-voyo-type="voyo-tab-page">
       <slot></slot>
     </view>
   </scroll-view>
@@ -37,6 +37,7 @@
      */
     data() {
       return {
+        componentName: "voyo-tab-page",
         enableScroll: true,
         scrollPos:0,
       };
@@ -54,20 +55,6 @@
       initTabs:{
         type:Boolean,
         default: true
-      }
-    },
-    watch:{
-      initTabs:{
-        immediate:true,
-        handler(v){
-          if(v){
-            this.execute.execute(()=>{
-              this.findTabbars().then(() => {
-                this.initCheckScroll();
-              });
-            })
-          }
-        }
       }
     },
     beforeCreate() {
@@ -115,20 +102,10 @@
       scrollTo(x){
         this.scrollPos=x;
       },
-      /**
-       * find from primary level
-       * @returns {Promise<void>}
-       */
-      async findTabbars() {
-        const children = this.$children;
-        this.tabs = findChildrenFromList(this, TabsName);
-
-        this.tabGroup = findChildrenFromList(this, TabGroupName);
-        if (!this.tabs && this.tabGroup) {
-          await this.tabGroup.mountedPromise();
-          this.tabs = findChildrenFromList(this.tabGroup, TabsName);
-          
-        }
+      
+      registryTabGroup(tabGroup,tabs){
+        this.tabGroup=tabGroup;
+        this.tabs=tabs;
       },
       scroll(e) {
         this.scrollChange.next(e);
@@ -150,7 +127,7 @@
       },
 
       async listenScroll(e) {
- 
+        if(!this.tabs)return;
         
         this.scrollTop = e.detail.scrollTop;
         this.scrollHeight = e.detail.scrollHeight;

@@ -16,11 +16,11 @@
           </label>
         </view>
         <input
+            ref="input"
           :value="value0"
           @blur="inputBlur"
           @input="valueChange"
           @confirm="keyboardConfirm"
-          :disabled="!focus"
           :focus="focus"
           class="_input"
           type="text"
@@ -42,7 +42,7 @@
       class="ml-1"
       :size="size"
       type="pure"
-      @tap="confirm"
+      @tap="btnConfirm"
     >
       {{ searchLabel }}
     </voyo-button>
@@ -100,11 +100,13 @@ export default class extends Vue {
   valueChange(e:any) {
     this.emitInput(e.detail.value);
   }
-  confirm(v?: string) {
-    this.inputBlur();
+  confirm(v: string) {
     if (v) this.value0 = v;
+    this.btnConfirm();
+  }
+  btnConfirm(){
+    this.inputBlur();
     this.searchValue = this.value0;
-
     this.inputConfirm(this.value0);
   }
   keyboardConfirm(e: any) {

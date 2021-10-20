@@ -68,6 +68,7 @@ export default {
     this.tabCount=0;
   },
   mounted() {
+    
     this.tabList = (
         isH5?
             this.$slots.default.map(i=>i.componentInstance):

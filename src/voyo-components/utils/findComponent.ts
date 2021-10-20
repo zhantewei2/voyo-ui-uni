@@ -1,5 +1,6 @@
-import Vue from "vue";
+import Vue, {VNode} from "vue";
 import { isH5 } from "../utils";
+import {findConf} from "@/requests/common/common.request";
 
 const VoyoSlotKey="data-voyo-type";
 const TabGroupName="voyo-tab-group";
@@ -25,13 +26,9 @@ const findParentComponent=(componentInstance:Vue,componentName:string,SlotNodeTy
     return findParentTarget(componentInstance,componentName);
   }else{
     const instance=findComponent(componentInstance,componentName);
-
+   
     if(instance)return instance;
-    if(componentInstance.$el&&componentInstance.$el.getAttribute("data-voyo-type")===SlotNodeType){
-      return findParentTarget(componentInstance.$parent,componentName);
-    }else{
-      return undefined;
-    }
+    return findParentTarget(componentInstance.$parent,componentName);
   }
 }
 
@@ -49,16 +46,34 @@ const isTabParent=(i:Vue)=>findParentComponent(i,TabName,TabSlotName);
 
 const isTabsParent=(i:Vue)=>findParentComponent(i,TabsName,TabsSlotName);
 
-const findChildrenFromList=(instance:Vue,name:string):Vue|undefined=>{
+const findComponentChildren=(vNodes:VNode[],name:string,curDeep:number=1,deep:number=3):Vue|undefined=>{
+  if(isH5){
+    for(let i of vNodes){
+      if(i.componentInstance && i.componentInstance.$data.componentName===name){
+        return i.componentInstance;
+      }
+    }
+    let componentInstance:any;
+    if(curDeep>deep)return undefined;
+    for(let i of vNodes){
+      if(i.children){
+        componentInstance=findComponentChildren(i.children,name,curDeep+1,deep);
+        if(componentInstance)return componentInstance;
+      }
+    }
+  }
+  return undefined;
+}
+
+const findChildrenFromList=(instance:Vue,name:string,deep:number=4):Vue|undefined=>{
   if(!isH5){
     for(let child of instance.$children){
       if(findComponent(child,name))return child;
     }
   }else{
-    if(!instance.$slots.default)return;
-    for(let vNode of instance.$slots.default){
-      if(findComponent(vNode.componentInstance as Vue,name))return vNode.componentInstance;
-    }
+    if(!instance.$slots||!instance.$slots.default)return;
+    
+    return findComponentChildren(instance.$slots.default,name,1,deep);
   }
 };
 

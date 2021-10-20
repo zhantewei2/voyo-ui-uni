@@ -126,10 +126,12 @@ export default {
     }
 
     this.loading = true;
+   
     if (this.intersectionRatio != null&&this.createIntersectionObserver) {
 
       this.observe = this.createIntersectionObserver({});
       if(this.relativeViewport)this.observe.relativeToViewport(this.relativeViewport);
+
       this.observe.relativeToViewport();
       this.observe.observe(".voyo-image-simple", (e) => {
         this.clearDelay();

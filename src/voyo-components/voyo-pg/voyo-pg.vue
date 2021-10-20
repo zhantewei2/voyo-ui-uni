@@ -146,6 +146,7 @@
       if (!this.paginationFn) throw Error("voyo-pg: must call getPaginationFn");
 
       let tab =  this.$parent;
+      
       if (!(tab=isTabParent(tab)))
         throw new Error("voyo-pagination must be child of tab component");
       this.tab=tab;

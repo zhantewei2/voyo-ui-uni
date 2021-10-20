@@ -9,6 +9,8 @@
 </template>
 <script>
 import { ExcuteAfterConnected } from "../utils/excuteAfterConnected";
+import {findChildrenFromList,findParentComponent} from "../utils/findComponent";
+
 import {isH5} from "../utils";
 export default {
   /**
@@ -35,6 +37,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    registryPage:{
+      type:Boolean,
+      default: false
+    }
   },
   watch: {
     index: {
@@ -50,12 +56,8 @@ export default {
   mounted() {
     
     if(isH5){
-      this.$slots.default.forEach((i) => {
-        const componentInstance=i.componentInstance;
-        const componentName=i.componentInstance.$data.componentName;
-        if (componentName === "voyo-tabs") this.tabs = componentInstance;
-        if (componentName === "voyo-tabbars") this.tabbars = componentInstance;
-      });
+      this.tabs=findChildrenFromList(this,"voyo-tabs");
+      this.tabbars=findChildrenFromList(this,"voyo-tabbars");
     }else{
       this.$children.forEach((i)=>{
         const componentName=i.$data.componentName;
@@ -69,7 +71,10 @@ export default {
     this.tabbars.$on("input", (index) => {
       this.setIndex(index);
     });
-
+    if(this.registryPage){
+      const page=findParentComponent(this.$parent,"voyo-tab-page","voyo-tab-page");
+      page&&page.registryTabGroup(this,this.tabs)
+    }
     this.excuteAfterConnected.connect();
   },
   methods: {
