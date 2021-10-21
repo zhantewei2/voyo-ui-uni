@@ -98,7 +98,7 @@ export default {
     if (this.standAlone) this.setIndex(this.value);
   },
   mounted() {
-
+    
     this.tabbarList = (isH5?this.$slots.default.map(i=>i.componentInstance):this.$children).filter(
       (vNode) => vNode.$data.componentName === "voyo-tabbar",
     );

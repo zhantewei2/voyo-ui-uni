@@ -1,6 +1,6 @@
 {
   "name": "@voyo/ui-uni",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "private": true,
   "scripts": {
     "serve": "npm run dev:h5",
