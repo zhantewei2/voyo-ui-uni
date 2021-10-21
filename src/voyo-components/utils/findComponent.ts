@@ -19,17 +19,8 @@ const findParentTarget=(parent:Vue,componentName:string):Vue|undefined=>{
   return parent.$parent?findParentTarget(parent.$parent,componentName):undefined;
 }
 
-const findParentComponent=(componentInstance:Vue,componentName:string,SlotNodeType:string):Vue|undefined=>{
-  
-  if(!isH5){
-
-    return findParentTarget(componentInstance,componentName);
-  }else{
-    const instance=findComponent(componentInstance,componentName);
-   
-    if(instance)return instance;
-    return findParentTarget(componentInstance.$parent,componentName);
-  }
+const findParentComponent=(componentInstance:Vue,componentName:string,SlotNodeType?:string):Vue|undefined=>{
+     return findParentTarget(componentInstance,componentName);
 }
 
 const isTabGroup=(componentInstance:Vue)=>findComponent(componentInstance,TabGroupName);
