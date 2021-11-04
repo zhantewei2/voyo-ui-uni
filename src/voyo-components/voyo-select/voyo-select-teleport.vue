@@ -134,7 +134,9 @@ export default class extends Vue {
     },210);
   }
   selectItem(i:Item){
-    this.onInput(this.useValue=i.value);
+    if(this.useValue!==i.value){
+      this.onInput(this.useValue=i.value);
+    }
     this.leave();
   }
 
