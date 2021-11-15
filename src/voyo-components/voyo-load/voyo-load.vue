@@ -1,6 +1,6 @@
 <template>
-<!--  <view>-->
-    <view
+  <!--  <view>-->
+  <view
       v-if="visible"
       class="voyo-load-wrapper"
       :class="[
@@ -17,20 +17,20 @@
       :style="[
           top?{top:top+'px'}:{}
       ]"
-    >
-      <view class="_view">
-        <!--        <text-->
-        <!--          class="za za-loading voyo-an-loading _textIcon voyo-color-des"-->
-        <!--        ></text>-->
-        <view class="_img-wrapper">
-          <image class="_img" :src="loadImg" />
-        </view>
-        <view :class="[$slots.default?'_text':'']">
-          <slot></slot>
-        </view>
+  >
+    <view class="_view">
+      <!--        <text-->
+      <!--          class="za za-loading voyo-an-loading _textIcon voyo-color-des"-->
+      <!--        ></text>-->
+      <view class="_img-wrapper">
+        <image class="_img" :src="loadImg" />
+      </view>
+      <view :class="[$slots.default?'_text':'']">
+        <slot></slot>
       </view>
     </view>
-<!--  </view>-->
+  </view>
+  <!--  </view>-->
 </template>
 <script>
 import { setting } from "../setting.service";
@@ -85,6 +85,13 @@ export default {
       type: Boolean,
       default: false,
     },
+    delay:{
+      type:Number,
+      default: setting.loadDelay
+    }
+  },
+  beforeCreate() {
+    this.delayTimeout=null;
   },
   watch: {
     show: {
@@ -107,8 +114,15 @@ export default {
   methods: {
     toShow() {
       if (this.show0) return;
-      this.clearLeave();
-      this.visible = this.show0 = true;
+      if(this.delayTimeout){
+        clearTimeout(this.delayTimeout);
+      }
+      this.delayTimeout=setTimeout(()=>{
+        this.delayTimeout=null;
+        if(!this.show)return;
+        this.clearLeave();
+        this.visible = this.show0 = true;
+      },this.delay);
     },
     toHide() {
       if (!this.show0) return;

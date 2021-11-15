@@ -24,6 +24,7 @@ export class Setting {
   btnBehaviorRecord?: boolean; //开启按钮行为记录
   btnBehaviorRecordSubject: Subject<any>=new Subject<any>();
   loadImg: string = "";  // voyo-load 加载图
+  loadDelay: number=50; // voyo-load 延迟出现
   loadBlockImg: string = ""; // voyo-load block模式加载图
   imgLoadImg: string = "";  //voyo-img 加载图
   loginImg: string = "";
