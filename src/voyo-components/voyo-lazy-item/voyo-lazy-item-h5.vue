@@ -14,35 +14,88 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {Component, Prop} from "vue-property-decorator";
+import {Component, Prop,Watch} from "vue-property-decorator";
 import { querySelector } from "../utils";
-import { Subject } from "rxjs";
 import { debounceTime } from "rxjs/operators";
+import {ExcuteAfterConnected} from "../utils/excuteAfterConnected";
+
 @Component({})
-export default class extends Vue {
+export default class VoyoLazyItemH5 extends Vue {
   observer: any;
   visible: boolean = true;
   yoName = ".yo-lazy-item";
   wrapperHeight: string = "";
+  parentIntersectionKey:string="voyo-lazy-parent-intersection";
   exist: boolean=true;
+  $refs:any;
+  $parent:any;
+  excuteAfterMounted:ExcuteAfterConnected;
   @Prop({default:false})useExist:boolean;
   beforeDestroy() {
     this.observer && this.observer.disconnect();
   }
+  beforeCreate(){
+    this.excuteAfterMounted=new ExcuteAfterConnected();
+  }
+  activated(){
+    this.registryParentIntersection();
+  }
+  deactivated(){
+    this.unregistryParentIntersection();
+  }
   mounted(this: any) {
-    const subject = new Subject<boolean>();
     if (!window.IntersectionObserver) return;
-
-    const intersection=new IntersectionObserver((entries) => {
-      const entry=entries[0];
-      subject.next(entry.isIntersecting);
-    })
-    intersection.observe(this.$refs.item);
-    
-    subject.subscribe((visible) => {
-      visible ? this.show() : this.hide();
+    this.createParentIntersection(this.$parent);
+    this.registryParentIntersection();
+    this.excuteAfterMounted.connect();
+  }
+  registryParentIntersection(){
+    // console.debug("registry~intersection")
+    this.$parent[this.parentIntersectionKey].registry(this.$refs.item,this,(intersecting)=>{
+      intersecting?this.show():this.hide();
     });
   }
+  unregistryParentIntersection(){
+    // console.debug("unregistry~intersection")
+    this.$parent[this.parentIntersectionKey].unregistry(this.$refs.item);
+  }
+  createParentIntersection(parent:any){
+    let parentInters:{
+      list: Array<{el:HTMLElement,instance:VoyoLazyItemH5,callback:(isIntersecting:boolean)=>void}>,
+      registry:(el:HTMLElement,instance:VoyoLazyItemH5,callback:(isIntersecting:boolean)=>void)=>void;
+      observer: IntersectionObserver
+    }=parent[this.parentIntersectionKey];
+    if(!parentInters){
+
+      parentInters=parent[this.parentIntersectionKey]={
+        list:[],
+        observer:new IntersectionObserver((entries)=>{
+          let i:{el:HTMLElement,instance:VoyoLazyItemH5,callback:(isIntersecting:boolean)=>void};
+          entries.forEach(entry=>{
+            if(i=parentInters.list.find(item=>item.el===entry.target)){
+              i.callback(entry.isIntersecting);
+            }
+          })
+        }),
+        registry:(el:HTMLElement,instance:VoyoLazyItemH5,callback:(isIntersecting:boolean)=>void)=>{
+          if(parentInters.list.find(i=>i.el===el))return;
+          parentInters.observer.observe(el);
+          parentInters.list.push({
+            el,
+            instance,
+            callback
+          })
+        },
+        unregistry:(el:HTMLElement)=>{
+          let observeIndex:number=parentInters.list.findIndex(i=>i.el===el);
+          if(observeIndex<0)return;
+          parentInters.observer.unobserve(el);
+          parentInters.list.splice(observeIndex,1);
+        }
+      }
+    }
+  }
+
   queryHeight(this:any){
     if(!this.wrapperHeight){
       setTimeout(()=>{

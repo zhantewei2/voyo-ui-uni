@@ -115,6 +115,18 @@ export default class extends Vue {
   inputSelfFocus(){
     
   }
+  mounted(){
+    // #ifdef ENV-H5
+    if(this.focus){
+      const input =(this.$refs as any).input;
+      if(input&&input.focus instanceof Function){
+        input.focus()
+      }else{
+        input.$el.querySelector("input").focus();
+      }
+    }
+    // #endif
+  }
 }
 </script>
 
