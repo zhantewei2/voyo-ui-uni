@@ -111,7 +111,7 @@ export default {
               this.lazyShow = this.lazyOnce = true;
               this.delayShow = null;
               if(!this.performance){
-                this.intersection.disconnect();
+                this.intersection&&this.intersection.disconnect();
                 this.intersection=null;
               }
             }, this.lazyDelayShow);
