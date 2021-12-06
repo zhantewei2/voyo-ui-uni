@@ -4,6 +4,7 @@ import {debounceTime, mergeMap} from "rxjs/operators";
 export interface ScrollOpts{
   scrollTop:number;
   scrollHeight:number;
+  fromDebounce?:boolean;
 }
 
 export class ScrollListener{
@@ -32,9 +33,14 @@ export class ScrollListener{
             // #endif
             // #ifdef ENV-H5
             const scrollViewEl=(component.$refs as any)[scrollViewRefName];
-            ob.next({
+            ob.next(scrollViewEl?{
               scrollTop: scrollViewEl.scrollTop,
-              scrollHeight: scrollViewEl.scrollHeight
+              scrollHeight: scrollViewEl.scrollHeight,
+              fromDebounce: true
+            }:{
+              scrollTop:0,
+              scrollHeight:0,
+              fromDebounce: true
             })
             ob.complete();
             // #endif
