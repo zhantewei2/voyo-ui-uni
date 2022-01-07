@@ -56,9 +56,11 @@ export default class extends Vue {
   serverErrMsg: string = "";
   netWorkErrMsg: string = "";
   isNetworkBreak: boolean = false;
-  beforeCreate(){
-    this.img = setting.errorImg;
-    this.netWorkErrMsg= setting.err.network;
+  created(){
+
+    this.img=setting.errorImg;
+    if(!this.netWorkErrMsg)this.netWorkErrMsg= setting.err.network;
+
   }
 }
 </script>
