@@ -52,6 +52,10 @@ export class Setting {
     linkIcon:"ui-uni ui-uni-right",
     selectIcon: "ui-uni ui-uni-select",
     border:true,
+  };
+  err={
+    network:"网络连接已断开",
+    
   }
 }
 
