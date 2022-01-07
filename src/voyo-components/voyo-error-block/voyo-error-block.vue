@@ -34,7 +34,7 @@ export default class extends Vue {
   @Prop({ default: "10em" }) height: string;
   @Prop({ default: "" }) serverErr: string;
   @Prop({ default: "" }) networkErr: string;
-  @Prop({}) except: YoError<string>;
+  @Prop({}) except: VoyoError;
   @Prop({}) absCenterPage: boolean;
   @Watch("serverErr", { immediate: true }) watchServerErr(e: string) {
     if(e)this.serverErrMsg = e;
