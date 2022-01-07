@@ -1,6 +1,6 @@
 {
   "name": "@voyo/ui-uni",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "private": true,
   "scripts": {
     "serve": "npm run dev:h5",
@@ -53,7 +53,7 @@
     "@vue/cli-plugin-typescript": "*",
     "@vue/cli-service": "~4.5.0",
     "@vue/shared": "^3.0.0",
-    "@ztwx/utils": "^1.9.1",
+    "@ztwx/utils": "^1.10.0",
     "babel-plugin-import": "^1.11.0",
     "core-js": "^3.6.5",
     "cross-env": "^7.0.2",
