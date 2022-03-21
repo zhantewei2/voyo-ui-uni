@@ -1,6 +1,5 @@
 import Vue, {VNode} from "vue";
 import { isH5 } from "../utils";
-import {findConf} from "@/requests/common/common.request";
 
 const VoyoSlotKey="data-voyo-type";
 const TabGroupName="voyo-tab-group";
@@ -63,7 +62,7 @@ const findChildrenFromList=(instance:Vue,name:string,deep:number=4):Vue|undefine
     }
   }else{
     if(!instance.$slots||!instance.$slots.default)return;
-    
+
     return findComponentChildren(instance.$slots.default,name,1,deep);
   }
 };
