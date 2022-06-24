@@ -3,9 +3,9 @@
 * user lanjuan
 **/
 <template>
- <view class="flex-v-mid" 
+ <view class="flex-v-mid"
       @touchstart="touchstart"
-      @touchend="touchend" 
+      @touchend="touchend"
       @tap="tap"
  >
    <view class="voyo-checkbox" :class="[
@@ -20,7 +20,7 @@
      <voyo-ripple-radio :color="color" ref="ripple" :disable-trigger="true" :disabled="disabled"/>
    </view>
    <slot></slot>
-   
+
  </view>
 </template>
 
@@ -36,7 +36,7 @@ export default class extends Vue {
     if(v!==this.value0)v?this.show():this.close();
   }
   @Emit("input")input(v:boolean){}
-  
+
   value0:boolean=false;
   toggle(){
     this.value0?this.close():this.show();
@@ -63,5 +63,6 @@ export default class extends Vue {
 <style lang="scss">
 .voyo-checkbox-selected{
   background-image: svg-load("./select.svg",fill=white);
+
 }
 </style>

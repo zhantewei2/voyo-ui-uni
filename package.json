@@ -1,7 +1,6 @@
 {
   "name": "@voyo/ui-uni",
   "version": "2.5.2",
-  "private": true,
   "scripts": {
     "serve": "npm run dev:h5",
     "build": "npm run build:h5",
@@ -48,7 +47,7 @@
     "@dcloudio/vue-cli-plugin-uni-optimize": "^2.0.0-31920210709003",
     "@dcloudio/webpack-uni-mp-loader": "^2.0.0-31920210709003",
     "@dcloudio/webpack-uni-pages-loader": "^2.0.0-31920210709003",
-    "@voyo/core-style": "^2.1.0",
+    "@voyo/core-style": "^2.5.3",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-typescript": "*",
     "@vue/cli-service": "~4.5.0",

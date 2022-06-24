@@ -35,7 +35,7 @@ export default class extends Vue {
     subject.subscribe((visible) => {
       visible ? this.show() : this.hide();
     });
-    this.observer.observe(this.yoName, (e) => {
+    this.observer.observe(this.yoName, (e:any) => {
       subject.next(e.intersectionRatio > 0);
     });
   }
@@ -47,12 +47,12 @@ export default class extends Vue {
             ([rect]:any) => rect.height,
         ).then(([rect]: any) => {
           this.wrapperHeight = rect.height ;
-        })  
+        })
       });
     }
   }
   show() {
-    if(this.useExist&&!this.exist)this.exist=true; 
+    if(this.useExist&&!this.exist)this.exist=true;
     if(!this.useExist&&!this.visible)this.visible=true;
     this.queryHeight();
   }

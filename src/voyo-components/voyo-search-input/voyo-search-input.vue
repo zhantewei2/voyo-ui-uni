@@ -12,12 +12,13 @@
         <view class="voyo-search-input-tags" v-if="showSearchLabel">
           <label class="voyo-search-badge" @tap="clear">
             {{ searchValue }}
-            <text class="za za-close ml-1 voyo-text-size-mini"></text>
+            <view class="voyo-input-search-tag-close mx-1" ></view>
           </label>
         </view>
         <input
-            ref="input"
+          ref="input"
           :value="value0"
+          :placeholder="placeholder"
           @blur="inputBlur"
           @input="valueChange"
           @confirm="keyboardConfirm"
@@ -30,7 +31,7 @@
         />
       </view>
       <label @click="clear" class="_clear voyo-an-fadeIn">
-        <text class="za za-close"></text>
+        <view class="voyo-input-search-close"></view>
       </label>
       <label class="_suffix">
         <slot name="suffix"></slot>
@@ -113,7 +114,7 @@ export default class extends Vue {
     this.confirm(e.detail.value);
   }
   inputSelfFocus(){
-    
+
   }
   mounted(){
     // #ifdef ENV-H5
@@ -130,4 +131,22 @@ export default class extends Vue {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style lang="scss">
+
+  .voyo-input-search-icon{
+    background-size:100%;
+    background-position:center;
+  }
+  .voyo-input-search-close{
+    @extend .voyo-input-search-icon;
+    background-image: svg-load("./close.svg",fill=black);
+    width:1.4em;
+    height:1.4em;
+  }
+  .voyo-input-search-tag-close{
+    @extend  .voyo-input-search-icon;
+    background-image: svg-load("./close.svg",fill=white);
+    width: 1em;
+    height: 1em;
+  }
+</style>

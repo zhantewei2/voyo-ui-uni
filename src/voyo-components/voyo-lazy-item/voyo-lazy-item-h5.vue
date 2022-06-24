@@ -51,7 +51,7 @@ export default class VoyoLazyItemH5 extends Vue {
   }
   registryParentIntersection(){
     // console.debug("registry~intersection")
-    this.$parent[this.parentIntersectionKey].registry(this.$refs.item,this,(intersecting)=>{
+    this.$parent[this.parentIntersectionKey].registry(this.$refs.item,this,(intersecting:any)=>{
       intersecting?this.show():this.hide();
     });
   }
@@ -72,7 +72,8 @@ export default class VoyoLazyItemH5 extends Vue {
         observer:new IntersectionObserver((entries)=>{
           let i:{el:HTMLElement,instance:VoyoLazyItemH5,callback:(isIntersecting:boolean)=>void};
           entries.forEach(entry=>{
-            if(i=parentInters.list.find(item=>item.el===entry.target)){
+            i=parentInters.list.find(item=>item.el===entry.target) as any;
+            if(i){
               i.callback(entry.isIntersecting);
             }
           })

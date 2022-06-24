@@ -126,5 +126,6 @@ page{
 @import "~@voyo/core-style/lib/components/select";
 @import "~@voyo/core-style/lib/components/cell";
 @import "~@voyo/core-style/lib/components/panel";
-
+@import "~@voyo/core-style/lib/components/input";
+@import "~@voyo/core-style/lib/components/search-input";
 </style>

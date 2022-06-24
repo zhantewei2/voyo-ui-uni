@@ -15,7 +15,7 @@
      <voyo-cell title="title" value="value"></voyo-cell>
    </voyo-panel>
    <view class="mx-3">
-     <voyo-button >delete11</voyo-button>
+     <voyo-button >delete</voyo-button>
      <voyo-button >btn</voyo-button>
    </view>
  </view>
