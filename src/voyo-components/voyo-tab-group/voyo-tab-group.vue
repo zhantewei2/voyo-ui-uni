@@ -54,7 +54,7 @@ export default {
     this.excuteAfterConnected = new ExcuteAfterConnected();
   },
   mounted() {
-    
+
     if(isH5){
       this.tabs=findChildrenFromList(this,"voyo-tabs");
       this.tabbars=findChildrenFromList(this,"voyo-tabbars");
@@ -62,10 +62,10 @@ export default {
       this.$children.forEach((i)=>{
         const componentName=i.$data.componentName;
         if (componentName === "voyo-tabs") this.tabs = i;
-        if (componentName === "voyo-tabbars") this.tabbars = i;
+        if (componentName === "voyo-tabbars"&& !i.$props.standAlone) this.tabbars = i;
       })
     }
-    
+
     if (!this.tabs || !this.tabbars)
       throw new Error("A lack of tabs or tabbars");
     this.tabbars.$on("input", (index) => {
