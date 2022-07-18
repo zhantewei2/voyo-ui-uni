@@ -19,6 +19,9 @@
 			"path": "pages/checkbox-page/checkbox-page"
 		},
 		{
+			"path": "pages/tab-page/tab-page"
+		},
+		{
 			"path": "pages/input-page/input-page"
 		},
 		{

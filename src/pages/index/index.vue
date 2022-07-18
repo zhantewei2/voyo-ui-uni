@@ -9,9 +9,6 @@
       {{i.label}}
     </view>
   </voyo-line>
-  <view class="div">
-    22
-  </view>
 </view>
 </template>
 
@@ -26,9 +23,9 @@ export default class extends Vue {
     {path:"/pages/panel-page/panel-page",label:"panel"},
     {path:"/pages/cell-page/cell-page",label:"cell"},
     {path:"/pages/checkbox-page/checkbox-page",label:"checkbox"},
-
     {path:"/pages/btn-page/btn-page",label:"button"},
     {path:"/pages/input-page/input-page",label:"input"},
+    {path:"/pages/tab-page/tab-page",label:"tab group"}
   ]
   tapLine(i:any){
     uni.navigateTo({
